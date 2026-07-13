@@ -1,158 +1,142 @@
-<p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
-  </a>
-</p>
-<h1 align="center">
-  Medusa DTC Starter
-</h1>
+# Bacoola
 
-<h4 align="center">
-  <a href="https://docs.medusajs.com">Documentation</a> |
-  <a href="https://www.medusajs.com">Website</a>
-</h4>
+E-commerce platform for the **Bacoola** clothing brand, built as a reusable
+template so it can be relaunched for other clothing brands. All brand-specific
+values (credentials, URLs, store/catalog data) live in **env files** and a
+single **seed-data module** — nothing brand-specific is hardcoded in logic.
 
-<p align="center">
-  Building blocks for digital commerce
-</p>
-<p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
-  </a>
-  <a href="https://circleci.com/gh/medusajs/medusa">
-    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
-  </a>
-  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
-  </a>
-</p>
+**Stack:** [Medusa v2](https://medusajs.com) backend + admin · Next.js +
+Tailwind storefront · PostgreSQL on [Neon](https://neon.tech) · Cloudinary for
+media · [Turborepo](https://turbo.build) monorepo.
 
-# Medusa DTC Starter
-
-A production-ready monorepo starter for direct-to-consumer ecommerce stores powered by Medusa and Next.js. Includes a fully featured storefront with product browsing, cart, checkout, customer accounts, and order management.
-
-## Features
-
-- All of [Medusa's commerce features](https://docs.medusajs.com/resources/commerce-modules)
-- Multi-region support with automatic country detection
-- Product catalog with variant selection
-- Cart with promotion codes
-- Multi-step checkout with shipping and payment
-- Customer accounts with order history and address management
-- Order transfer between accounts
-
-## Getting Started
-
-### Deploy with Medusa Cloud
-
-The fastest way to get started is deploying with [Medusa Cloud](https://cloud.medusajs.com):
-
-1. [Create a Medusa Cloud account](https://cloud.medusajs.com)
-2. Deploy this starter directly from your dashboard
-
-### Local Installation
-
-> **Prerequisites:
->
-> - [Node.js](https://nodejs.org/) v20+
-> - [PostgreSQL](https://www.postgresql.org/) v15+
-> - [pnpm](https://pnpm.io/) v10+
-
-1. Clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/medusajs/dtc-starter.git
-cd dtc-starter
-pnpm install
+```
+apps/
+  backend/     Medusa v2 server + admin dashboard  (http://localhost:9000/app)
+  storefront/  Next.js + Tailwind storefront        (http://localhost:8000)
 ```
 
-2. Set up environment variables for the backend:
+## Prerequisites
+
+- **Node.js 20 or 22 LTS** (both are supported; the storefront needs Node ≤ 24)
+- **npm 10+**
+- A **PostgreSQL database** — this project targets [Neon](https://neon.tech)
+- A **Cloudinary account** (for product image uploads) — optional to boot, but
+  required before uploading media in the admin
+
+## Getting started
+
+### 1. Install dependencies (from the repo root)
+
+```bash
+npm install
+```
+
+This installs both workspaces (`apps/backend`, `apps/storefront`).
+
+### 2. Configure the backend
 
 ```bash
 cp apps/backend/.env.template apps/backend/.env
 ```
 
-3. Set the database URL in `apps/backend.env`:
+Edit `apps/backend/.env` and set:
 
-```bash
-# Replace with actual database URL, make sure the database exists.
-DATABASE_URL=postgres://postgres:@localhost:5432/medusa-dtc-starter
-```
+- `DATABASE_URL` — your Neon connection string
+  (`postgresql://<user>:<password>@<host>/<db>?sslmode=require`)
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` — from
+  your Cloudinary dashboard (can be left blank to boot; uploads will fail until set)
 
-4. Run migrations:
-
-```bash
-cd apps/backend
-pnpm medusa db:migrate
-```
-
-5. Add admin user:
+### 3. Run migrations + seed sample data
 
 ```bash
 cd apps/backend
-pnpm medusa user -e admin@test.com -p supersecret
+npx medusa db:migrate
 ```
 
-6. Start Medusa backend:
+`db:migrate` also runs the migration script at
+`src/migration-scripts/initial-data-seed.ts`, which seeds the store, a US
+region, the categories **Men / Women / T-Shirts / Polos**, and 5 sample
+products. It runs **once** (tracked in the DB); to re-seed, reset the database.
+
+### 4. Create an admin user
 
 ```bash
 cd apps/backend
-pnpm dev
+npx medusa user -e admin@bacoola.com -p somepassword
 ```
 
-7. Open the admin dashboard at `localhost:9000/app` and log in. Retrieve your publishable API key at Settings > Publishable API key.
-
-8. Set up environment variables for the storefront:
+### 5. Start the backend
 
 ```bash
-cp apps/storefront/.env.template apps/storefront/.env.local
+# from apps/backend
+npm run dev
 ```
 
-9. Update `apps/storefront/.env.local` with your Medusa publishable API key:
+Open **http://localhost:9000/app** and log in. Under
+**Settings → Publishable API keys**, copy the key created by the seed
+("Storefront Publishable API Key").
+
+### 6. Configure and start the storefront
 
 ```bash
-NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_6c3...
+cp apps/storefront/.env.local.template apps/storefront/.env.local
 ```
 
-10.  Start storefront:
+Set `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` in `apps/storefront/.env.local` to the
+key from the previous step, then:
 
 ```bash
-cd apps/storefront
-pnpm dev
+# from apps/storefront
+npm run dev
 ```
 
-The storefront runs on `http://localhost:8000`.
+Open **http://localhost:8000** — it fetches products from the backend via
+`NEXT_PUBLIC_MEDUSA_BACKEND_URL`.
 
-You can slo run the following command from the root to start both backend and storefront:
+> Tip: from the repo root, `npm run dev` starts **both** apps together (Turborepo).
 
-```bash
-pnpm dev
-```
+## Environment variables
 
-## Configuration
+### Backend (`apps/backend/.env`)
 
-The storefront is configured via environment variables in `apps/storefront/.env.local`:
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | Neon PostgreSQL connection string |
+| `STORE_CORS` / `ADMIN_CORS` / `AUTH_CORS` | Allowed origins for store/admin/auth APIs |
+| `JWT_SECRET` / `COOKIE_SECRET` | Auth secrets (use strong values in production) |
+| `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | Cloudinary credentials |
+| `CLOUDINARY_FOLDER` | Folder assets upload into (default `bacoola`) |
+
+### Storefront (`apps/storefront/.env.local`)
 
 | Variable | Description | Default |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | Publishable API key from your Medusa backend | — |
-| `NEXT_PUBLIC_MEDUSA_BACKEND_URL` | URL of your Medusa backend | `http://localhost:9000` |
-| `NEXT_PUBLIC_DEFAULT_REGION` | Default region country code | `dk` |
-| `NEXT_PUBLIC_BASE_URL` | Base URL of the storefront | `https://localhost:8000` |
-| `NEXT_PUBLIC_STRIPE_KEY` | Stripe publishable key (optional) | — |
+|---|---|---|
+| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | Publishable key from the backend | — |
+| `NEXT_PUBLIC_MEDUSA_BACKEND_URL` | Backend API URL | `http://localhost:9000` |
+| `NEXT_PUBLIC_DEFAULT_REGION` | Default region country code (must match a seeded region) | `us` |
+| `NEXT_PUBLIC_BASE_URL` | Storefront base URL | `http://localhost:8000` |
+
+`.env` and `.env.local` are gitignored — only the `*.template` files are committed.
+
+## File storage (Cloudinary)
+
+Media uploads use a small custom Medusa **File Module provider** at
+`apps/backend/src/modules/cloudinary`, registered in
+`apps/backend/medusa-config.ts` under `@medusajs/medusa/file`. It reads
+credentials from the `CLOUDINARY_*` env vars — no keys are hardcoded.
+
+## Rebranding for a new clothing brand
+
+This repo is a template. To spin it up for a different brand:
+
+1. **Catalog & store** — edit `apps/backend/src/data/bacoola-seed.ts` (store
+   name, currencies, region, categories, products). The seed runner is generic;
+   you don't touch code.
+2. **Credentials & URLs** — set values in the `.env` files (new Neon DB, new
+   Cloudinary account, `CLOUDINARY_FOLDER`, CORS origins).
+3. **Storefront branding** — theme/components live under `apps/storefront`.
 
 ## Resources
 
 - [Medusa Documentation](https://docs.medusajs.com)
-- [Medusa Cloud](https://cloud.medusajs.com)
+- [Neon](https://neon.tech) · [Cloudinary](https://cloudinary.com) · [Turborepo](https://turbo.build)
