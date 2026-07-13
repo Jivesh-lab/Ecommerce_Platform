@@ -1,31 +1,43 @@
-import { Github } from "@medusajs/icons";
-import { Button, Heading } from "@modules/common/components/ui";
-const Hero = () => {
-  return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
-        <span>
-          <Heading
-            level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
-          >
-            Ecommerce Starter Template
-          </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
-          >
-            Powered by Medusa and Next.js
-          </Heading>
-        </span>
-        <a href="https://github.com/medusajs/dtc-starter" target="_blank">
-          <Button variant="secondary">
-            View on GitHub <Github />
-          </Button>
-        </a>
-      </div>
-    </div>
-  );
-};
+import { HeroSlider } from "./slider"
+import { HeroSlide } from "./types"
 
-export default Hero;
+const slides: HeroSlide[] = [
+  {
+    id: "new-now",
+    title: "New Now",
+    ctaText: "Discover More",
+    link: "/store",
+    imageSrc: "/images/hero-newnow.jpg",
+    imageAlt: "Minimal campaign model showcasing new arrivals in neutral tones",
+  },
+  {
+    id: "vacation-collection",
+    title: "Vacation Collection",
+    ctaText: "Shop Now",
+    link: "/store",
+    imageSrc: "/images/hero-vacation.jpg",
+    imageAlt: "Summer holiday model posing in minimalist vacation clothing",
+  },
+  {
+    id: "linen-essentials",
+    title: "Linen Essentials",
+    ctaText: "Explore Collection",
+    link: "/store",
+    imageSrc: "/images/hero-linen.jpg",
+    imageAlt: "Luxury organic linen shirt editorial layout",
+  },
+  {
+    id: "summer-edit",
+    title: "Summer Edit",
+    ctaText: "View Collection",
+    link: "/store",
+    imageSrc: "/images/hero-summeredit.jpg",
+    imageAlt: "Chic editorial model posing in beige summer blazer",
+  },
+]
+
+const Hero = () => {
+  return <HeroSlider slides={slides} />
+}
+
+export default Hero
