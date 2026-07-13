@@ -12,5 +12,27 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
     }
-  }
+  },
+  modules: [
+    {
+      // File storage: Cloudinary instead of local disk.
+      // Credentials are read from env vars (see .env.template) — never hardcoded.
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/cloudinary",
+            id: "cloudinary",
+            options: {
+              cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+              api_key: process.env.CLOUDINARY_API_KEY,
+              api_secret: process.env.CLOUDINARY_API_SECRET,
+              secure: true,
+              folder: process.env.CLOUDINARY_FOLDER || "bacoola",
+            },
+          },
+        ],
+      },
+    },
+  ],
 })
