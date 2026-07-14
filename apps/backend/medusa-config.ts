@@ -11,6 +11,8 @@ module.exports = defineConfig({
       authCors: process.env.AUTH_CORS!,
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
+      // @ts-ignore - Disable secure cookies when testing production build locally via HTTP
+      cookieSecure: process.env.NODE_ENV === "production" && !process.env.ADMIN_CORS?.includes("localhost"),
     }
   },
   modules: [
@@ -29,6 +31,36 @@ module.exports = defineConfig({
               api_secret: process.env.CLOUDINARY_API_SECRET,
               secure: true,
               folder: process.env.CLOUDINARY_FOLDER || "bacoola",
+            },
+          },
+        ],
+      },
+    },
+    {
+      // Fulfillment: register Shiprocket as a fulfillment PROVIDER so that
+      // creating a fulfillment for an order pushes it to the Shiprocket
+      // dashboard (assigns an AWB, schedules pickup). Registering the plugin in
+      // the `plugins` array below only loads the admin widget + API routes — it
+      // does NOT make Shiprocket available as a provider. Both are required.
+      // The manual provider is kept so manual/return fulfillments still work.
+      // Credentials come from env vars — never hardcoded.
+      resolve: "@medusajs/medusa/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/fulfillment-manual",
+            id: "manual",
+          },
+          {
+            resolve: "@sam-ael/medusa-plugin-shiprocket",
+            id: "shiprocket",
+            options: {
+              email: process.env.SHIPROCKET_EMAIL,
+              password: process.env.SHIPROCKET_PASSWORD,
+              // Must match a pickup location nickname configured in your
+              // Shiprocket dashboard (Settings → Pickup Addresses). Defaults to
+              // "Primary" inside the plugin if unset.
+              pickup_location: process.env.SHIPROCKET_PICKUP_LOCATION,
             },
           },
         ],

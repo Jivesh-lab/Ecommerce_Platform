@@ -1,23 +1,20 @@
 "use client"
 
-import { Popover, PopoverPanel, Transition } from "@headlessui/react"
-import useToggleState from "@lib/hooks/use-toggle-state"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
+import React, { useState, Fragment, useEffect } from "react"
+import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react"
+import { XMark, ArrowRightMini } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { Text, clx } from "@modules/common/components/ui"
-import { Fragment } from "react"
+import useToggleState from "@lib/hooks/use-toggle-state"
+import { Locale } from "@lib/data/locales"
+import { clx } from "@modules/common/components/ui"
 import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
-import { Locale } from "@lib/data/locales"
 
-
-const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Account: "/account",
-  Cart: "/cart",
-}
+import CategoryTabs from "./CategoryTabs"
+import MenuList from "./MenuList"
+import TeenSwitcher from "./TeenSwitcher"
+import KidsSwitcher from "./KidsSwitcher"
+import { CategoryKey, womenMenu, menMenu } from "./menu-data"
 
 type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
@@ -25,119 +22,146 @@ type SideMenuProps = {
   currentLocale: string | null
 }
 
-const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
+const SideMenu: React.FC<SideMenuProps> = ({ regions, locales, currentLocale }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState<CategoryKey>("women")
+  
   const countryToggleState = useToggleState()
   const languageToggleState = useToggleState()
 
+  // Open and close helper functions
+  const openDrawer = () => setIsOpen(true)
+  const closeDrawer = () => setIsOpen(false)
+
+  // Listen for Escape key (handled by Headless UI Dialog automatically, but good to ensure)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeDrawer()
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
+
   return (
-    <div className="h-full">
-      <div className="flex items-center h-full">
-        <Popover className="h-full flex">
-          {({ open, close }) => (
-            <>
-              <div className="relative flex h-full">
-                <Popover.Button
-                  data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
+    <div className="h-full flex items-center">
+      {/* Trigger Button */}
+      <button
+        data-testid="nav-menu-button"
+        onClick={openDrawer}
+        className="relative h-full flex items-center text-xs uppercase tracking-[0.2em] font-semibold transition-all ease-out duration-200 focus:outline-none hover:text-neutral-500"
+      >
+        Menu
+      </button>
+
+      {/* Navigation Drawer */}
+      <Transition show={isOpen} as={Fragment}>
+        <Dialog onClose={closeDrawer} className="relative z-[9999]">
+          {/* Backdrop Blur/Overlay */}
+          <TransitionChild
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/15 backdrop-blur-[2px] transition-opacity" />
+          </TransitionChild>
+
+          {/* Sliding Panel */}
+          <div className="fixed inset-0 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full">
+                <TransitionChild
+                  as={Fragment}
+                  enter="transform transition ease-in-out duration-300"
+                  enterFrom="-translate-x-full"
+                  enterTo="translate-x-0"
+                  leave="transform transition ease-in-out duration-250"
+                  leaveFrom="translate-x-0"
+                  leaveTo="-translate-x-full"
                 >
-                  Menu
-                </Popover.Button>
-              </div>
+                  <DialogPanel className="pointer-events-auto w-screen max-w-full sm:max-w-[360px] md:max-w-[420px]">
+                    <div className="flex h-full flex-col bg-white shadow-xl select-none">
+                      {/* Top Bar with Tabs and Close button */}
+                      <div className="relative flex flex-col pt-8">
+                        <div className="absolute top-4 right-4 z-50">
+                          <button
+                            onClick={closeDrawer}
+                            data-testid="close-menu-button"
+                            className="p-2 text-neutral-400 hover:text-black transition-colors duration-200 focus:outline-none"
+                            aria-label="Close panel"
+                          >
+                            <XMark className="w-6 h-6 stroke-[1.2px]" />
+                          </button>
+                        </div>
 
-              {open && (
-                <div
-                  className="fixed inset-0 z-[50] bg-black/0 pointer-events-auto"
-                  onClick={close}
-                  data-testid="side-menu-backdrop"
-                />
-              )}
+                        {/* Top Category Tabs (Women, Men, Teen, Kids) */}
+                        <CategoryTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                      </div>
 
-              <Transition
-                show={open}
-                as={Fragment}
-                enter="transition ease-out duration-150"
-                enterFrom="opacity-0"
-                enterTo="opacity-100 backdrop-blur-2xl"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 backdrop-blur-2xl"
-                leaveTo="opacity-0"
-              >
-                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
-                  <div
-                    data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6"
-                  >
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
-                        <XMark />
-                      </button>
-                    </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
-                        return (
-                          <li key={name}>
-                            <LocalizedClientLink
-                              href={href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
-                              onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
-                            >
-                              {name}
-                            </LocalizedClientLink>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                    <div className="flex flex-col gap-y-6">
-                      {!!locales?.length && (
+                      {/* Main Menu Scrollable Body */}
+                      <div className="relative flex-1 overflow-y-auto px-8 py-4 scrollbar-none">
+                        {activeTab === "women" && <MenuList items={womenMenu} />}
+                        {activeTab === "men" && <MenuList items={menMenu} />}
+                        {activeTab === "teen" && <TeenSwitcher />}
+                        {activeTab === "kids" && <KidsSwitcher />}
+                      </div>
+
+                      {/* Bottom Footer Section (Country / Language selection) */}
+                      <div className="border-t border-neutral-100 px-8 py-6 flex flex-col gap-y-4 bg-neutral-50/50">
+                        {!!locales?.length && (
+                          <div
+                            className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
+                            onMouseEnter={languageToggleState.open}
+                            onMouseLeave={languageToggleState.close}
+                          >
+                            <LanguageSelect
+                              toggleState={languageToggleState}
+                              locales={locales}
+                              currentLocale={currentLocale}
+                            />
+                            <ArrowRightMini
+                              className={clx(
+                                "transition-transform duration-150 w-4 h-4",
+                                languageToggleState.state ? "-rotate-90" : ""
+                              )}
+                            />
+                          </div>
+                        )}
+
                         <div
-                          className="flex justify-between"
-                          onMouseEnter={languageToggleState.open}
-                          onMouseLeave={languageToggleState.close}
+                          className="flex justify-between items-center text-xs tracking-wider uppercase text-neutral-600 hover:text-black transition-colors duration-200 cursor-pointer"
+                          onMouseEnter={countryToggleState.open}
+                          onMouseLeave={countryToggleState.close}
                         >
-                          <LanguageSelect
-                            toggleState={languageToggleState}
-                            locales={locales}
-                            currentLocale={currentLocale}
-                          />
+                          {regions && (
+                            <CountrySelect
+                              toggleState={countryToggleState}
+                              regions={regions}
+                            />
+                          )}
                           <ArrowRightMini
                             className={clx(
-                              "transition-transform duration-150",
-                              languageToggleState.state ? "-rotate-90" : ""
+                              "transition-transform duration-150 w-4 h-4",
+                              countryToggleState.state ? "-rotate-90" : ""
                             )}
                           />
                         </div>
-                      )}
-                      <div
-                        className="flex justify-between"
-                        onMouseEnter={countryToggleState.open}
-                        onMouseLeave={countryToggleState.close}
-                      >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={countryToggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            "transition-transform duration-150",
-                            countryToggleState.state ? "-rotate-90" : ""
-                          )}
-                        />
+
+                        <div className="text-[10px] text-neutral-400 uppercase tracking-widest mt-2 select-none">
+                          © {new Date().getFullYear()} Bacoola. All rights reserved.
+                        </div>
                       </div>
-                      <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
-                        reserved.
-                      </Text>
                     </div>
-                  </div>
-                </PopoverPanel>
-              </Transition>
-            </>
-          )}
-        </Popover>
-      </div>
+                  </DialogPanel>
+                </TransitionChild>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   )
 }

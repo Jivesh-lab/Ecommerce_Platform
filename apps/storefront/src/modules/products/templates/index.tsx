@@ -32,29 +32,41 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <>
       <div
-        className="content-container  flex flex-col small:flex-row small:items-start py-6 relative"
+        className="flex flex-col lg:flex-row w-full relative"
         data-testid="product-container"
       >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
-        </div>
-        <div className="block w-full relative">
-          <ImageGallery images={images} />
-        </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
-          <Suspense
-            fallback={
-              <ProductActions
-                disabled={true}
-                product={product}
-                region={region}
+        {/* Left Side: Single Massive Image */}
+        <div className="w-full lg:w-[65%] relative bg-gray-100 flex items-center justify-center overflow-hidden min-h-[60vh] lg:min-h-screen">
+           {images?.length > 0 ? (
+              <img 
+                 src={images[0].url} 
+                 alt={product.title} 
+                 className="w-full h-full object-cover object-center absolute inset-0"
               />
-            }
-          >
-            <ProductActionsWrapper id={product.id} region={region} />
-          </Suspense>
+           ) : (
+              <div className="text-gray-400">No Image Available</div>
+           )}
+        </div>
+
+        {/* Right Side: Product Details */}
+        <div className="w-full lg:w-[35%] flex flex-col px-6 md:px-12 py-10 lg:py-16 lg:sticky lg:top-0 h-max max-h-screen overflow-y-auto scrollbar-hide">
+          <ProductInfo product={product} />
+          
+          <div className="my-8">
+            <Suspense
+              fallback={
+                <ProductActions
+                  disabled={true}
+                  product={product}
+                  region={region}
+                />
+              }
+            >
+              <ProductActionsWrapper id={product.id} region={region} />
+            </Suspense>
+          </div>
+
+          <ProductTabs product={product} />
         </div>
       </div>
       <div

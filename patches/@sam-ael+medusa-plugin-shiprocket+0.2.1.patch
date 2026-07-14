@@ -1,0 +1,24 @@
+diff --git a/node_modules/@sam-ael/medusa-plugin-shiprocket/.medusa/server/src/providers/shiprocket/client/index.js b/node_modules/@sam-ael/medusa-plugin-shiprocket/.medusa/server/src/providers/shiprocket/client/index.js
+index 1cd423c..9a85610 100644
+--- a/node_modules/@sam-ael/medusa-plugin-shiprocket/.medusa/server/src/providers/shiprocket/client/index.js
++++ b/node_modules/@sam-ael/medusa-plugin-shiprocket/.medusa/server/src/providers/shiprocket/client/index.js
+@@ -246,6 +246,19 @@ class ShiprocketClient {
+             if (!orderCreated.data?.shipment_id) {
+                 throw new utils_1.MedusaError(utils_1.MedusaError.Types.INVALID_DATA, "Shiprocket order created but no shipment ID returned");
+             }
++            // SHIPROCKET_SKIP_AWB: stop after creating the order (which is free)
++            // and skip AWB assignment + pickup, which require a funded wallet
++            // (min Rs 100). The order still appears on the Shiprocket dashboard
++            // under "New Orders"; an AWB can be assigned later from there or by
++            // unsetting this flag once the wallet is topped up.
++            if (process.env.SHIPROCKET_SKIP_AWB === "true") {
++                return {
++                    ...orderCreated.data,
++                    awb: "",
++                    tracking_number: "",
++                    tracking_url: "",
++                };
++            }
+             // Try to get preferred courier based on SHIPROCKET_DELIVERY_PREFERENCE env
+             let courierId = null;
+             try {

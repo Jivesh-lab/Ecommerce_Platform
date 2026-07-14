@@ -25,11 +25,19 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",
         hostname: "localhost",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9000",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
       {
         protocol: "https",

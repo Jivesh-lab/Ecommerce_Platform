@@ -1,13 +1,8 @@
 import { Metadata } from "next"
 
 import Hero from "@modules/home/components/hero"
-import EditorialGrids from "@modules/home/components/editorial-grids"
-import FeaturedCollections from "@modules/home/components/featured-collections"
+import EditorialFlow from "@modules/home/components/editorial-flow"
 import FeaturedProductsShowcase from "@modules/home/components/featured-products/showcase"
-import EditorialBanner from "@modules/home/components/editorial-banner"
-import BrandStory from "@modules/home/components/brand-story"
-import LookbookGallery from "@modules/home/components/lookbook"
-import Newsletter from "@modules/home/components/newsletter"
 
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
@@ -52,28 +47,15 @@ export default async function Home(props: {
       {/* 1. Cinematic Hero Slider */}
       <Hero />
 
-      {/* 2. Editorial Composition Layouts (Sections A, B, C, D) */}
-      <EditorialGrids />
+      {/* 2. Magazine-like Editorial Campaign Flow */}
+      <EditorialFlow />
 
-      {/* 3. Featured Categories Introduction */}
-      <FeaturedCollections />
-
-      {/* 4. Medusa Priced Products Showcase */}
+      {/* 3. Medusa Priced Products Showcase */}
       {pricedProducts && (
         <FeaturedProductsShowcase products={pricedProducts} region={region} />
       )}
-
-      {/* 5. Seasonal Editorial Full-Width Banner */}
-      <EditorialBanner />
-
-      {/* 6. Brand Story Minimal Philosophy Banner */}
-      <BrandStory />
-
-      {/* 7. Lookbook Grid Gallery */}
-      <LookbookGallery />
-
-      {/* 8. Subscription Newsletter Form */}
-      <Newsletter />
     </>
   )
 }
+
+

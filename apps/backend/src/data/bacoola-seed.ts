@@ -55,6 +55,10 @@ export type SeedProduct = {
   prices: { inr: number; usd: number }
   /** Grams; used for shipping estimates. */
   weight?: number
+  /** Package dimensions in cm (Shiprocket requires these to create an order). */
+  length?: number
+  width?: number
+  height?: number
 }
 
 const IMG = "https://medusa-public-images.s3.eu-west-1.amazonaws.com"

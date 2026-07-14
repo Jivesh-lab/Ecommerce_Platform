@@ -58,6 +58,14 @@ function buildProductVariantsAndOptions(product: SeedProduct) {
           ? `${skuBase}-${size}-${color.toUpperCase()}`
           : `${skuBase}-${size}`,
         options: variantOptions,
+        // Shiprocket needs weight + dimensions, and Medusa's fulfillment flow
+        // only loads them from the VARIANT (never the product), so they must be
+        // set here. Weight (g) comes from the product; dimensions (cm) default
+        // to folded-apparel sizes.
+        weight: product.weight ?? 400,
+        length: product.length ?? 30,
+        width: product.width ?? 25,
+        height: product.height ?? 4,
         prices: [
           { amount: product.prices.inr, currency_code: "inr" },
           { amount: product.prices.usd, currency_code: "usd" },
@@ -176,6 +184,17 @@ export default async function initial_data_seed({
     },
   });
 
+  // Also enable Shiprocket as a fulfillment provider at this location so that
+  // fulfillments created here can be pushed to the Shiprocket dashboard.
+  await link.create({
+    [Modules.STOCK_LOCATION]: {
+      stock_location_id: stockLocation.id,
+    },
+    [Modules.FULFILLMENT]: {
+      fulfillment_provider_id: "shiprocket_shiprocket",
+    },
+  });
+
   logger.info("Seeding fulfillment data...");
   const { data: shippingProfileResult } = await query.graph({
     entity: "shipping_profile",
@@ -211,7 +230,7 @@ export default async function initial_data_seed({
       {
         name: "Standard Shipping",
         price_type: "flat",
-        provider_id: "manual_manual",
+        provider_id: "shiprocket_shiprocket",
         service_zone_id: fulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
@@ -232,7 +251,7 @@ export default async function initial_data_seed({
       {
         name: "Express Shipping",
         price_type: "flat",
-        provider_id: "manual_manual",
+        provider_id: "shiprocket_shiprocket",
         service_zone_id: fulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
@@ -285,7 +304,13 @@ export default async function initial_data_seed({
           title: product.title,
           handle: product.handle,
           description: product.description,
+          // Shiprocket requires weight (g) AND package dimensions (cm, per the
+          // `length_unit: "cm"` config) on every item, or order creation fails
+          // with "Missing dimensions/weight". Defaults suit folded apparel.
           weight: product.weight ?? 400,
+          length: product.length ?? 30,
+          width: product.width ?? 25,
+          height: product.height ?? 4,
           status: ProductStatus.PUBLISHED,
           shipping_profile_id: shippingProfile.id,
           category_ids: product.categories.map(

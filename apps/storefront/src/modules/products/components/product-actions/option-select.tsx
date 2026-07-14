@@ -22,10 +22,9 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
   const filteredOptions = (option.values ?? []).map((v) => v.value)
 
   return (
-    <div className="flex flex-col gap-y-3">
-      <span className="text-sm">Select {title}</span>
+    <div className="flex flex-col w-full mt-4">
       <div
-        className="flex flex-wrap justify-between gap-2"
+        className="flex flex-col w-full"
         data-testid={dataTestId}
       >
         {filteredOptions.map((v) => {
@@ -34,21 +33,24 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               onClick={() => updateOption(option.id, v)}
               key={v}
               className={clx(
-                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
+                "w-full flex items-center justify-between py-3 border-b border-gray-200 text-xs font-semibold tracking-wider uppercase transition-colors text-left",
                 {
-                  "border-ui-border-interactive": v === current,
-                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
-                    v !== current,
+                  "text-black bg-gray-50": v === current,
+                  "text-gray-600 hover:text-black": v !== current,
                 }
               )}
               disabled={disabled}
               data-testid="option-button"
             >
-              {v}
+              <span>{v}</span>
+              {v === current && <span className="text-[10px] text-gray-400">SELECTED</span>}
             </button>
           )
         })}
       </div>
+      <button className="text-left text-[11px] font-semibold text-gray-900 underline mt-4 tracking-wide uppercase hover:text-gray-600 transition-colors">
+         Measurements
+      </button>
     </div>
   )
 }

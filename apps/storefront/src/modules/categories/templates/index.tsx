@@ -10,6 +10,12 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { HttpTypes } from "@medusajs/types"
 import { OptionValueIds } from "@lib/util/product-option-filters"
 
+// Import modular reusable landing components and configuration
+import HeroBanner from "../components/HeroBanner"
+import EditorialGrid from "../components/EditorialGrid"
+import { categoryEditorialConfigs } from "../components/landing-configs"
+import CategoryProductListing from "./CategoryProductListing"
+
 export default function CategoryTemplate({
   category,
   sortBy,
@@ -28,6 +34,40 @@ export default function CategoryTemplate({
 
   if (!category || !countryCode) notFound()
 
+  // Verify if we should render an Editorial Landing Page (only for women, men, teen, kids)
+  const editorialConfig = categoryEditorialConfigs[category.handle]
+
+  if (editorialConfig) {
+    return (
+      <div className="relative w-full flex flex-col bg-neutral-900">
+        
+        {/* 1. Fullscreen Editorial Hero Banner Component */}
+        <HeroBanner
+          title={editorialConfig.heroTitle}
+          image={editorialConfig.heroImage}
+          ctaText={editorialConfig.heroCta}
+          ctaHref={`/products/${category.handle}`}
+        />
+
+        {/* 2. Alternating Editorial Campaign Grids Components */}
+        {editorialConfig.grid.map((row, index) => (
+          <EditorialGrid
+            key={index}
+            leftTitle={row.leftTitle}
+            leftImage={row.leftImage}
+            leftHref={`/categories/${category.handle}/${row.leftSlug}`}
+            leftSpan={row.leftSpan}
+            rightTitle={row.rightTitle}
+            rightImage={row.rightImage}
+            rightHref={`/categories/${category.handle}/${row.rightSlug}`}
+            rightSpan={row.rightSpan}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  // Fallback to normal Product Listing Page (PLP) for subcategories
   const parents = [] as HttpTypes.StoreProductCategory[]
 
   const getParents = (category: HttpTypes.StoreProductCategory) => {
@@ -40,66 +80,22 @@ export default function CategoryTemplate({
   getParents(category)
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList
-        sortBy={sort}
-        data-testid="sort-by-container"
-        hideOptionsPicker
-      />
-      <div className="w-full">
-        <div className="flex flex-row mb-8 text-2xl-semi gap-4">
-          {parents &&
-            parents.map((parent) => (
-              <span key={parent.id} className="text-ui-fg-subtle">
-                <LocalizedClientLink
-                  className="mr-4 hover:text-black"
-                  href={`/categories/${parent.handle}`}
-                  data-testid="sort-by-link"
-                >
-                  {parent.name}
-                </LocalizedClientLink>
-                /
-              </span>
-            ))}
-          <h1 data-testid="category-page-title">{category.name}</h1>
-        </div>
-        {category.description && (
-          <div className="mb-8 text-base-regular">
-            <p>{category.description}</p>
-          </div>
-        )}
-        {category.category_children && (
-          <div className="mb-8 text-base-large">
-            <ul className="grid grid-cols-1 gap-2">
-              {category.category_children?.map((c) => (
-                <li key={c.id}>
-                  <InteractiveLink href={`/categories/${c.handle}`}>
-                    {c.name}
-                  </InteractiveLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <Suspense
-          fallback={
-            <SkeletonProductGrid
-              numberOfProducts={category.products?.length ?? 8}
-            />
-          }
-        >
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            categoryId={category.id}
-            countryCode={countryCode}
-            optionValueIds={optionValueIds}
+    <CategoryProductListing category={category} parents={parents}>
+      <Suspense
+        fallback={
+          <SkeletonProductGrid
+            numberOfProducts={category.products?.length ?? 8}
           />
-        </Suspense>
-      </div>
-    </div>
+        }
+      >
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          categoryId={category.id}
+          countryCode={countryCode}
+          optionValueIds={optionValueIds}
+        />
+      </Suspense>
+    </CategoryProductListing>
   )
 }

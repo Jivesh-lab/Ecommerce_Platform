@@ -1,20 +1,24 @@
 "use client"
 
-import React from "react"
+import React, { useState, useRef } from "react"
 import { usePathname } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { clx } from "@modules/common/components/ui"
+import MegaMenu from "../navigation/MegaMenu"
+import { CategoryKey } from "../navigation/navigation-data"
 
 const NAV_LINKS = [
-  { label: "Women", href: "/categories/women" },
-  { label: "Men", href: "/categories/men" },
-  { label: "Teen", href: "/categories/teen" },
-  { label: "Kids", href: "/categories/kids" },
-  { label: "Home", href: "/" },
+  { label: "Women", href: "/categories/women", key: "women" },
+  { label: "Men", href: "/categories/men", key: "men" },
+  { label: "Teen", href: "/categories/teen", key: "teen" },
+  { label: "Kids", href: "/categories/kids", key: "kids" },
+  { label: "Home", href: "/", key: "home" },
 ]
 
 export const HeaderLinks: React.FC = () => {
   const pathname = usePathname()
+  const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const isActive = (href: string) => {
     if (!pathname) return false
@@ -31,28 +35,78 @@ export const HeaderLinks: React.FC = () => {
     return cleanPath.startsWith(href)
   }
 
+  // Handle cursor entering a link trigger
+  const handleMouseEnter = (key: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+
+    if (key === "home") {
+      setActiveCategory(null)
+    } else {
+      setActiveCategory(key as CategoryKey)
+    }
+  }
+
+  // Handle cursor leaving a link trigger
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      setActiveCategory(null)
+    }, 150) // small delay to allow cursor to reach the menu dropdown
+  }
+
+  // Handle cursor entering the mega menu dropdown directly
+  const handleMenuMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+  }
+
+  // Handle cursor leaving the mega menu dropdown
+  const handleMenuMouseLeave = () => {
+    setActiveCategory(null)
+  }
+
   return (
-    <div className="flex items-center gap-x-[32px] h-full">
-      {NAV_LINKS.map(({ label, href }) => {
+    <div className="flex items-center gap-x-[32px] h-full relative">
+      {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
         return (
-          <LocalizedClientLink
+          <div
             key={label}
-            href={href}
-            className={clx(
-              "relative py-[26px] text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
-              active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
-            )}
+            onMouseEnter={() => handleMouseEnter(key)}
+            onMouseLeave={handleMouseLeave}
+            className="h-full flex items-center"
           >
-            {label}
-            {active && (
-              <span className="absolute bottom-[18px] left-0 right-0 h-[1.5px] bg-[#111111]" />
-            )}
-          </LocalizedClientLink>
+            <LocalizedClientLink
+              href={href}
+              className={clx(
+                "relative py-[26px] text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
+                active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
+              )}
+            >
+              {label}
+              {active && (
+                <span className="absolute bottom-[18px] left-0 right-0 h-[1.5px] bg-[#111111]" />
+              )}
+            </LocalizedClientLink>
+          </div>
         )
       })}
+
+      {/* Render the Dropdown Panel below Navbar */}
+      <MegaMenu
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        onMouseEnter={handleMenuMouseEnter}
+        onMouseLeave={handleMenuMouseLeave}
+      />
     </div>
   )
 }
 
 export default HeaderLinks
+
