@@ -124,6 +124,18 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
             styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
           />
         </div>
+        {/* Hidden inputs so the react-select State/City values reach FormData
+            (same fix as the shipping address form). */}
+        <input
+          type="hidden"
+          name="billing_address.province"
+          value={formData["billing_address.province"] || ""}
+        />
+        <input
+          type="hidden"
+          name="billing_address.city"
+          value={formData["billing_address.city"] || ""}
+        />
         <Input
           label="Phone"
           name="billing_address.phone"

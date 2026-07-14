@@ -208,6 +208,20 @@ const ShippingAddress = ({
           />
         </div>
       </div>
+      {/* react-select renders no native <input>, so the checkout's FormData
+          submission silently drops State/City. These hidden inputs carry the
+          selected values through so province/city are actually saved — without
+          them orders arrive with null city/state and Shiprocket rejects them. */}
+      <input
+        type="hidden"
+        name="shipping_address.province"
+        value={formData["shipping_address.province"] || ""}
+      />
+      <input
+        type="hidden"
+        name="shipping_address.city"
+        value={formData["shipping_address.city"] || ""}
+      />
       <div className="my-8">
         <Checkbox
           label="Billing address same as shipping address"
