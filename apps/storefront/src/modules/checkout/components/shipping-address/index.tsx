@@ -6,6 +6,8 @@ import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
+import { State, City } from "country-state-city"
+import Select from "react-select"
 
 const ShippingAddress = ({
   customer,
@@ -157,15 +159,6 @@ const ShippingAddress = ({
           required
           data-testid="shipping-postal-code-input"
         />
-        <Input
-          label="City"
-          name="shipping_address.city"
-          autoComplete="address-level2"
-          value={formData["shipping_address.city"]}
-          onChange={handleChange}
-          required
-          data-testid="shipping-city-input"
-        />
         <CountrySelect
           name="shipping_address.country_code"
           autoComplete="country"
@@ -175,14 +168,45 @@ const ShippingAddress = ({
           required
           data-testid="shipping-country-select"
         />
-        <Input
-          label="State / Province"
-          name="shipping_address.province"
-          autoComplete="address-level1"
-          value={formData["shipping_address.province"]}
-          onChange={handleChange}
-          data-testid="shipping-province-input"
-        />
+        <div className="flex flex-col gap-2">
+          <label className="text-ui-fg-base text-xs">State / Province</label>
+          <Select
+            options={State.getStatesOfCountry(formData["shipping_address.country_code"]?.toUpperCase()).map(s => ({ value: s.name, label: s.name, isoCode: s.isoCode }))}
+            value={{ value: formData["shipping_address.province"], label: formData["shipping_address.province"] || "Select State" }}
+            onChange={(selectedOption: any) => {
+              setFormData({
+                ...formData,
+                "shipping_address.province": selectedOption.value,
+                "shipping_address.city": "" // Reset city when state changes
+              })
+            }}
+            isDisabled={!formData["shipping_address.country_code"]}
+            placeholder="Search State"
+            className="text-sm"
+            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-ui-fg-base text-xs">City</label>
+          <Select
+            options={
+              formData["shipping_address.province"] 
+                ? City.getCitiesOfState(
+                    formData["shipping_address.country_code"]?.toUpperCase(), 
+                    State.getStatesOfCountry(formData["shipping_address.country_code"]?.toUpperCase()).find(s => s.name === formData["shipping_address.province"])?.isoCode || ""
+                  ).map(c => ({ value: c.name, label: c.name }))
+                : []
+            }
+            value={{ value: formData["shipping_address.city"], label: formData["shipping_address.city"] || "Select City" }}
+            onChange={(selectedOption: any) => {
+              handleChange({ target: { name: "shipping_address.city", value: selectedOption.value } } as any)
+            }}
+            isDisabled={!formData["shipping_address.province"]}
+            placeholder="Search City"
+            className="text-sm"
+            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+          />
+        </div>
       </div>
       <div className="my-8">
         <Checkbox

@@ -36,12 +36,12 @@ const AddressSelect = ({
     <Listbox onChange={handleSelect} value={selectedAddress?.id}>
       <div className="relative">
         <Listbox.Button
-          className="relative w-full flex justify-between items-center px-4 py-[10px] text-left bg-white cursor-default focus:outline-none border rounded-rounded focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
+          className="relative w-full flex justify-between items-center px-4 py-[10px] text-left bg-white cursor-default focus:outline-none border rounded-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
           data-testid="shipping-address-select"
         >
           {({ open }) => (
             <>
-              <span className="block truncate">
+              <span className="block truncate text-xs uppercase tracking-widest font-bold text-gray-900">
                 {selectedAddress
                   ? selectedAddress.address_1
                   : "Choose an address"}
@@ -78,15 +78,15 @@ const AddressSelect = ({
                       data-testid="shipping-address-radio"
                     />
                     <div className="flex flex-col">
-                      <span className="text-left text-base-semi">
+                      <span className="text-left text-xs uppercase tracking-widest font-bold text-gray-900">
                         {address.first_name} {address.last_name}
                       </span>
                       {address.company && (
-                        <span className="text-small-regular text-ui-fg-base">
+                        <span className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                           {address.company}
                         </span>
                       )}
-                      <div className="flex flex-col text-left text-base-regular mt-2">
+                      <div className="flex flex-col text-left text-[10px] md:text-xs uppercase tracking-wider text-gray-500 mt-2">
                         <span>
                           {address.address_1}
                           {address.address_2 && (

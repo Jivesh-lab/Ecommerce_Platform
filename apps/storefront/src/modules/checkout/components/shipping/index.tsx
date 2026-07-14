@@ -157,7 +157,7 @@ const Shipping: React.FC<ShippingProps> = ({
         <Heading
           level="h2"
           className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
+            "flex flex-row text-xl md:text-2xl uppercase tracking-widest font-bold text-gray-900 gap-x-4 items-baseline",
             {
               "opacity-50 pointer-events-none select-none":
                 !isOpen && cart.shipping_methods?.length === 0,
@@ -176,7 +176,7 @@ const Shipping: React.FC<ShippingProps> = ({
             <Text>
               <button
                 onClick={handleEdit}
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+                className="text-[10px] uppercase tracking-widest underline font-bold text-gray-900 hover:text-gray-500 transition-colors"
                 data-testid="edit-delivery-button"
               >
                 Edit
@@ -214,7 +214,7 @@ const Shipping: React.FC<ShippingProps> = ({
                       value={PICKUP_OPTION_ON}
                       data-testid="delivery-option-radio"
                       className={clx(
-                        "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+                        "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-none px-8 mb-2 hover:shadow-borders-interactive-with-active",
                         {
                           "border-ui-border-interactive":
                             showPickupOptions === PICKUP_OPTION_ON,
@@ -225,7 +225,7 @@ const Shipping: React.FC<ShippingProps> = ({
                         <MedusaRadio
                           checked={showPickupOptions === PICKUP_OPTION_ON}
                         />
-                        <span className="text-base-regular">
+                        <span className="text-xs uppercase tracking-widest font-bold text-gray-900">
                           Pick up your order
                         </span>
                       </div>
@@ -256,7 +256,7 @@ const Shipping: React.FC<ShippingProps> = ({
                         data-testid="delivery-option-radio"
                         disabled={isDisabled}
                         className={clx(
-                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-none px-8 mb-2 hover:shadow-borders-interactive-with-active",
                           {
                             "border-ui-border-interactive":
                               option.id === shippingMethodId,
@@ -269,7 +269,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           <MedusaRadio
                             checked={option.id === shippingMethodId}
                           />
-                          <span className="text-base-regular">
+                          <span className="text-xs uppercase tracking-widest font-bold text-gray-900">
                             {option.name}
                           </span>
                         </div>
@@ -326,7 +326,7 @@ const Shipping: React.FC<ShippingProps> = ({
                           disabled={option.insufficient_inventory}
                           data-testid="delivery-option-radio"
                           className={clx(
-                            "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
+                            "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-none px-8 mb-2 hover:shadow-borders-interactive-with-active",
                             {
                               "border-ui-border-interactive":
                                 option.id === shippingMethodId,
@@ -340,10 +340,10 @@ const Shipping: React.FC<ShippingProps> = ({
                               checked={option.id === shippingMethodId}
                             />
                             <div className="flex flex-col">
-                              <span className="text-base-regular">
+                              <span className="text-xs uppercase tracking-widest font-bold text-gray-900">
                                 {option.name}
                               </span>
-                              <span className="text-base-regular text-ui-fg-muted">
+                              <span className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 mt-1">
                                 {formatAddress(
                                   (option as unknown as { service_zone?: { fulfillment_set?: { location?: { address: HttpTypes.StoreCartAddress } } } }).service_zone?.fulfillment_set?.location
                                     ?.address as HttpTypes.StoreCartAddress
@@ -372,8 +372,7 @@ const Shipping: React.FC<ShippingProps> = ({
               data-testid="delivery-option-error-message"
             />
             <Button
-              size="large"
-              className="mt"
+              className="w-full h-12 bg-gray-900 text-white rounded-none hover:bg-gray-800 tracking-widest text-xs font-bold uppercase transition-colors mt-6"
               onClick={handleSubmit}
               isLoading={isLoading}
               disabled={!cart.shipping_methods?.[0]}
@@ -387,11 +386,11 @@ const Shipping: React.FC<ShippingProps> = ({
         <div>
           <div className="text-small-regular">
             {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              <div className="flex flex-col">
+                <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                   Method
                 </Text>
-                <Text className="txt-medium text-ui-fg-subtle">
+                <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                   {cart.shipping_methods!.at(-1)!.name}{" "}
                   {convertToLocale({
                     amount: cart.shipping_methods!.at(-1)!.amount!,

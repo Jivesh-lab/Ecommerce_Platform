@@ -2,6 +2,8 @@ import { HttpTypes } from "@medusajs/types"
 import Input from "@modules/common/components/input"
 import React, { useState } from "react"
 import CountrySelect from "../country-select"
+import { State, City } from "country-state-city"
+import Select from "react-select"
 
 const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   const [formData, setFormData] = useState<Record<string, string>>({
@@ -74,13 +76,6 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-postal-input"
         />
-        <Input
-          label="City"
-          name="billing_address.city"
-          autoComplete="address-level2"
-          value={formData["billing_address.city"]}
-          onChange={handleChange}
-        />
         <CountrySelect
           name="billing_address.country_code"
           autoComplete="country"
@@ -90,14 +85,45 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-country-select"
         />
-        <Input
-          label="State / Province"
-          name="billing_address.province"
-          autoComplete="address-level1"
-          value={formData["billing_address.province"]}
-          onChange={handleChange}
-          data-testid="billing-province-input"
-        />
+        <div className="flex flex-col gap-2">
+          <label className="text-ui-fg-base text-xs">State / Province</label>
+          <Select
+            options={State.getStatesOfCountry(formData["billing_address.country_code"]?.toUpperCase()).map(s => ({ value: s.name, label: s.name, isoCode: s.isoCode }))}
+            value={{ value: formData["billing_address.province"], label: formData["billing_address.province"] || "Select State" }}
+            onChange={(selectedOption: any) => {
+              setFormData({
+                ...formData,
+                "billing_address.province": selectedOption.value,
+                "billing_address.city": "" // Reset city when state changes
+              })
+            }}
+            isDisabled={!formData["billing_address.country_code"]}
+            placeholder="Search State"
+            className="text-sm"
+            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-ui-fg-base text-xs">City</label>
+          <Select
+            options={
+              formData["billing_address.province"] 
+                ? City.getCitiesOfState(
+                    formData["billing_address.country_code"]?.toUpperCase(), 
+                    State.getStatesOfCountry(formData["billing_address.country_code"]?.toUpperCase()).find(s => s.name === formData["billing_address.province"])?.isoCode || ""
+                  ).map(c => ({ value: c.name, label: c.name }))
+                : []
+            }
+            value={{ value: formData["billing_address.city"], label: formData["billing_address.city"] || "Select City" }}
+            onChange={(selectedOption: any) => {
+              handleChange({ target: { name: "billing_address.city", value: selectedOption.value } } as any)
+            }}
+            isDisabled={!formData["billing_address.province"]}
+            placeholder="Search City"
+            className="text-sm"
+            styles={{ control: (base) => ({ ...base, minHeight: '40px', borderRadius: '8px' }) }}
+          />
+        </div>
         <Input
           label="Phone"
           name="billing_address.phone"

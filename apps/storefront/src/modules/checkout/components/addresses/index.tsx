@@ -41,10 +41,10 @@ const Addresses = ({
 
   return (
     <div className="bg-white">
-      <div className="flex flex-row items-center justify-between mb-6">
+      <div className="flex flex-row items-center justify-between mb-8">
         <Heading
           level="h2"
-          className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
+          className="flex flex-row text-xl md:text-2xl uppercase tracking-widest font-bold text-gray-900 gap-x-4 items-baseline"
         >
           Shipping Address
           {!isOpen && <CheckCircleSolid />}
@@ -53,7 +53,7 @@ const Addresses = ({
           <Text>
             <button
               onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+              className="text-[10px] uppercase tracking-widest underline font-bold text-gray-900 hover:text-gray-500 transition-colors"
               data-testid="edit-address-button"
             >
               Edit
@@ -94,73 +94,73 @@ const Addresses = ({
           <div className="text-small-regular">
             {cart && cart.shipping_address ? (
               <div className="flex items-start gap-x-8">
-                <div className="flex items-start gap-x-1 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
                   <div
-                    className="flex flex-col w-1/3"
+                    className="flex flex-col"
                     data-testid="shipping-address-summary"
                   >
-                    <Text className="txt-medium-plus text-ui-fg-base mb-1">
+                    <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                       Shipping Address
                     </Text>
-                    <Text className="txt-medium text-ui-fg-subtle">
+                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                       {cart.shipping_address.first_name}{" "}
                       {cart.shipping_address.last_name}
                     </Text>
-                    <Text className="txt-medium text-ui-fg-subtle">
+                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 break-words">
                       {cart.shipping_address.address_1}{" "}
                       {cart.shipping_address.address_2}
                     </Text>
-                    <Text className="txt-medium text-ui-fg-subtle">
+                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                       {cart.shipping_address.postal_code},{" "}
                       {cart.shipping_address.city}
                     </Text>
-                    <Text className="txt-medium text-ui-fg-subtle">
+                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                       {cart.shipping_address.country_code?.toUpperCase()}
                     </Text>
                   </div>
 
                   <div
-                    className="flex flex-col w-1/3 "
+                    className="flex flex-col"
                     data-testid="shipping-contact-summary"
                   >
-                    <Text className="txt-medium-plus text-ui-fg-base mb-1">
+                    <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                       Contact
                     </Text>
-                    <Text className="txt-medium text-ui-fg-subtle">
+                    <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                       {cart.shipping_address.phone}
                     </Text>
-                    <Text className="txt-medium text-ui-fg-subtle">
+                    <Text className="text-[10px] md:text-xs tracking-wider text-gray-500 break-words">
                       {cart.email}
                     </Text>
                   </div>
 
                   <div
-                    className="flex flex-col w-1/3"
+                    className="flex flex-col"
                     data-testid="billing-address-summary"
                   >
-                    <Text className="txt-medium-plus text-ui-fg-base mb-1">
+                    <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                       Billing Address
                     </Text>
 
                     {sameAsBilling ? (
-                      <Text className="txt-medium text-ui-fg-subtle">
+                      <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                         Billing and delivery address are the same.
                       </Text>
                     ) : (
                       <>
-                        <Text className="txt-medium text-ui-fg-subtle">
+                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                           {cart.billing_address?.first_name}{" "}
                           {cart.billing_address?.last_name}
                         </Text>
-                        <Text className="txt-medium text-ui-fg-subtle">
+                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 break-words">
                           {cart.billing_address?.address_1}{" "}
                           {cart.billing_address?.address_2}
                         </Text>
-                        <Text className="txt-medium text-ui-fg-subtle">
+                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                           {cart.billing_address?.postal_code},{" "}
                           {cart.billing_address?.city}
                         </Text>
-                        <Text className="txt-medium text-ui-fg-subtle">
+                        <Text className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500">
                           {cart.billing_address?.country_code?.toUpperCase()}
                         </Text>
                       </>

@@ -62,14 +62,16 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </LocalizedClientLink>
       </Table.Cell>
 
-      <Table.Cell className="text-left">
+      <Table.Cell className="text-left py-6">
         <Text
-          className="txt-medium-plus text-ui-fg-base"
+          className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-900 mb-1"
           data-testid="product-title"
         >
           {item.product_title}
         </Text>
-        <LineItemOptions variant={item.variant} data-testid="product-variant" />
+        <div className="text-[10px] uppercase tracking-wider text-gray-500">
+          <LineItemOptions variant={item.variant} data-testid="product-variant" />
+        </div>
       </Table.Cell>
 
       {type === "full" && (

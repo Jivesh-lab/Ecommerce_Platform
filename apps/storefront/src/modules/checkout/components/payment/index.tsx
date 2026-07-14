@@ -123,7 +123,7 @@ const Payment = ({
         <Heading
           level="h2"
           className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
+            "flex flex-row text-xl md:text-2xl uppercase tracking-widest font-bold text-gray-900 gap-x-4 items-baseline",
             {
               "opacity-50 pointer-events-none select-none":
                 !isOpen && !paymentReady,
@@ -137,7 +137,7 @@ const Payment = ({
           <Text>
             <button
               onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+              className="text-[10px] uppercase tracking-widest underline font-bold text-gray-900 hover:text-gray-500 transition-colors"
               data-testid="edit-payment-button"
             >
               Edit
@@ -197,8 +197,7 @@ const Payment = ({
           />
 
           <Button
-            size="large"
-            className="mt-6"
+            className="w-full h-12 bg-gray-900 text-white rounded-none hover:bg-gray-800 tracking-widest text-xs font-bold uppercase transition-colors mt-6"
             onClick={handleSubmit}
             isLoading={isLoading}
             disabled={
@@ -215,28 +214,28 @@ const Payment = ({
 
         <div className={isOpen ? "hidden" : "block"}>
           {cart && paymentReady && activeSession ? (
-            <div className="flex items-start gap-x-1 w-full">
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              <div className="flex flex-col">
+                <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                   Payment method
                 </Text>
                 <Text
-                  className="txt-medium text-ui-fg-subtle"
+                  className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500"
                   data-testid="payment-method-summary"
                 >
                   {paymentInfoMap[activeSession?.provider_id]?.title ||
                     activeSession?.provider_id}
                 </Text>
               </div>
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              <div className="flex flex-col">
+                <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                   Payment details
                 </Text>
                 <div
-                  className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
+                  className="flex gap-2 text-[10px] md:text-xs uppercase tracking-wider text-gray-500 items-center"
                   data-testid="payment-details-summary"
                 >
-                  <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+                  <Container className="flex items-center h-7 w-fit p-2 bg-gray-100 rounded-none border-0">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || (
                       <CreditCard />
                     )}
@@ -250,12 +249,12 @@ const Payment = ({
               </div>
             </div>
           ) : paidByGiftcard ? (
-            <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
+            <div className="flex flex-col">
+              <Text className="text-xs uppercase tracking-widest font-bold text-gray-900 mb-2">
                 Payment method
               </Text>
               <Text
-                className="txt-medium text-ui-fg-subtle"
+                className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500"
                 data-testid="payment-method-summary"
               >
                 Gift card
