@@ -8,6 +8,7 @@ import MegaMenu from "../navigation/MegaMenu"
 import { CategoryKey } from "../navigation/navigation-data"
 
 const NAV_LINKS = [
+  { label: "Home", href: "/", key: "home" },
   { label: "Women", href: "/categories/women", key: "women" },
   { label: "Men", href: "/categories/men", key: "men" },
   { label: "Teen", href: "/categories/teen", key: "teen" },
