@@ -19,10 +19,10 @@ export default async function Nav() {
   return (
     <div className="sticky top-0 inset-x-0 z-50">
       <header className="relative h-[76px] mx-auto border-b border-[#ECECEC] bg-white transition-colors duration-200">
-        <nav className="w-full h-full px-8 small:px-12 max-w-[1550px] mx-auto flex items-center justify-between text-small-regular">
+        <nav className="w-full h-full px-6 sm:px-8 xl:px-10 mx-auto max-w-none text-small-regular">
           
           {/* DESKTOP LAYOUT (1024px and wider) */}
-          <div className="hidden small:grid grid-cols-3 items-center w-full h-full">
+          <div className="hidden small:grid grid-cols-[1fr_auto_1fr] items-center w-full h-full">
             
             {/* Left Section: Navigation links */}
             <div className="flex justify-start items-center h-full">
@@ -33,7 +33,7 @@ export default async function Nav() {
             <div className="flex justify-center items-center">
               <LocalizedClientLink
                 href="/"
-                className="text-2xl font-bold tracking-[0.25em] text-[#111111] hover:text-[#555555] transition-colors duration-200 uppercase select-none font-sans"
+                className="text-[28px] leading-none font-semibold tracking-[0.22em] text-[#111111] hover:text-[#555555] transition-colors duration-200 uppercase select-none font-sans justify-self-center"
                 data-testid="nav-store-link"
               >
                 Bacoola
@@ -41,7 +41,7 @@ export default async function Nav() {
             </div>
 
             {/* Right Section: Actions */}
-            <div className="flex justify-end items-center gap-x-[32px] text-[14px] font-semibold text-[#111111] tracking-wider uppercase h-full">
+            <div className="flex justify-end items-center gap-x-[30px] text-[14px] font-semibold text-[#111111] tracking-wider uppercase h-full">
               <LocalizedClientLink
                 href="/store"
                 className="hover:text-[#555555] transition-colors duration-200"
@@ -54,7 +54,7 @@ export default async function Nav() {
                 className="hover:text-[#555555] transition-colors duration-200"
                 data-testid="nav-account-link"
               >
-                Log In
+                My Account
               </LocalizedClientLink>
               
               <LocalizedClientLink

@@ -12,7 +12,6 @@ const NAV_LINKS = [
   { label: "Men", href: "/categories/men", key: "men" },
   { label: "Teen", href: "/categories/teen", key: "teen" },
   { label: "Kids", href: "/categories/kids", key: "kids" },
-  { label: "Home", href: "/", key: "home" },
 ]
 
 export const HeaderLinks: React.FC = () => {
@@ -71,7 +70,7 @@ export const HeaderLinks: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center gap-x-[32px] h-full relative">
+    <div className="flex items-center gap-x-[28px] h-full relative">
       {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
         return (
@@ -109,4 +108,3 @@ export const HeaderLinks: React.FC = () => {
 }
 
 export default HeaderLinks
-
