@@ -41,7 +41,7 @@ const Addresses = ({
 
   return (
     <div className="bg-white">
-      <div className="mb-8 flex flex-row items-center justify-between border-b border-neutral-200 pb-4">
+      <div className="mb-7 flex flex-row items-center justify-between border-b border-neutral-200 pb-4">
         <Heading
           level="h2"
           className="flex flex-row items-baseline gap-x-2 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-950"
@@ -63,7 +63,7 @@ const Addresses = ({
       </div>
       {isOpen ? (
         <form action={formAction}>
-          <div className="pb-10">
+          <div className="pb-7">
             <ShippingAddress
               customer={customer}
               checked={sameAsBilling}
@@ -75,18 +75,18 @@ const Addresses = ({
               <div>
                 <Heading
                   level="h2"
-                  className="border-b border-neutral-200 pb-4 pt-8 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-950"
+                  className="border-b border-neutral-200 pb-4 pt-7 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-950"
                 >
                   Billing Address
                 </Heading>
 
-                <div className="pt-6">
+                <div className="pt-5">
                   <BillingAddress cart={cart} />
                 </div>
               </div>
             )}
             <SubmitButton
-              className="mt-8 h-14 w-full rounded-none bg-black px-6 text-xs font-semibold uppercase tracking-[0.2em] text-white hover:bg-neutral-900 small:w-auto small:min-w-[320px]"
+              className="mt-7 h-14 w-full rounded-none bg-black px-6 text-xs font-semibold uppercase tracking-[0.2em] text-white hover:bg-neutral-900 small:w-auto small:min-w-[320px]"
               data-testid="submit-address-button"
             >
               Continue to delivery

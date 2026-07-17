@@ -26,11 +26,9 @@ const Summary = ({ cart }: SummaryProps) => {
   const [loading, setLoading] = useState(false)
 
   return (
-    <div className="flex flex-col gap-y-8 font-sans w-full max-w-[488px] ml-auto">
-      {/* 1. Totals (Subtotal, Delivery, TOTAL) */}
+    <div className="ml-auto flex w-full max-w-[484px] flex-col gap-y-10 font-sans pt-10 small:pt-1">
       <CartTotals totals={cart} />
 
-      {/* 2. Large black CHECKOUT button */}
       <LocalizedClientLink
         href={"/checkout?step=" + step}
         data-testid="checkout-button"
@@ -39,7 +37,7 @@ const Summary = ({ cart }: SummaryProps) => {
       >
         <button
           disabled={loading}
-          className="w-full bg-[#111111] hover:bg-neutral-900 text-white text-[15px] font-semibold uppercase tracking-[0.02em] py-4 transition-all duration-300 focus:outline-none flex items-center justify-center gap-x-2"
+          className="flex w-full items-center justify-center gap-x-2 bg-[#111111] py-5 text-[15px] font-semibold uppercase tracking-[-0.01em] text-white transition-all duration-300 hover:bg-neutral-900 focus:outline-none"
         >
           {loading ? (
             <>
@@ -52,36 +50,20 @@ const Summary = ({ cart }: SummaryProps) => {
         </button>
       </LocalizedClientLink>
 
-      {/* 3. Promo Code Accordion */}
-      <div className="mt-1">
+      <div className="mt-7">
         <DiscountCode cart={cart} />
       </div>
 
-      {/* 4. Delivery & Returns Static Info */}
-      <div className="border-t border-neutral-100 pt-8 flex flex-col gap-y-3">
-        <div className="flex items-center gap-x-2 text-[15px] text-neutral-700 font-light">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-4 h-4 text-neutral-400"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-            />
-          </svg>
-          <span>Free returns in 30 days</span>
+      <div className="flex flex-col gap-y-4 pt-8">
+        <div className="text-[13px] font-normal text-[#111111]">
+          Free returns in 30 days
         </div>
 
         <LocalizedClientLink
           href="/delivery-returns"
-          className="text-[15px] font-semibold uppercase tracking-[0.02em] text-neutral-950 hover:text-neutral-700 transition-colors"
+          className="text-[12px] font-bold uppercase tracking-[0.05em] text-[#111111] transition-colors hover:text-neutral-500 border border-[#E5E5E5] hover:border-[#111111] py-4 w-full text-center flex items-center justify-center"
         >
-          View Delivery and Returns
+          VIEW DELIVERY AND RETURNS
         </LocalizedClientLink>
       </div>
     </div>

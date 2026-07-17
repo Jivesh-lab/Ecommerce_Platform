@@ -125,31 +125,28 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   // -------------------------------------------------------------
   return (
     <div 
-      className="group flex flex-col relative w-full bg-white" 
+      className="group relative flex w-full flex-col bg-white" 
       data-testid="product-row"
     >
-      {/* Absolute Loading Spinner overlay */}
       {(updating || isDeleting) && (
         <div className="absolute inset-0 bg-white/70 z-20 flex items-center justify-center backdrop-blur-[1px]">
           <Spinner className="animate-spin text-black" size={24} />
         </div>
       )}
 
-      {/* Delete / Remove "X" in top-right overlaying the image */}
       <button
         onClick={handleDelete}
-        className="absolute top-3 right-3 z-10 bg-white hover:bg-neutral-50 text-neutral-800 p-2.5 transition-colors duration-200 focus:outline-none border border-neutral-100"
+        className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center bg-white/90 text-neutral-800 transition-colors duration-200 hover:bg-white focus:outline-none"
         aria-label="Remove item"
         data-testid="product-delete-button"
       >
-        <X size={14} />
+        <X size={18} strokeWidth={1.5} />
       </button>
 
-      {/* Product Image Link with strict aspect ratio */}
       <LocalizedClientLink
         href={`/products/${item.product_handle}`}
-        className="relative w-full overflow-hidden bg-neutral-50 border border-neutral-100 block"
-        style={{ aspectRatio: "3 / 4" }}
+        className="relative block w-full overflow-hidden bg-neutral-50"
+        style={{ aspectRatio: "35 / 49" }}
       >
         {item.thumbnail ? (
           <Image
@@ -168,69 +165,69 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         )}
       </LocalizedClientLink>
 
-      {/* Details Box */}
-      <div className="mt-3 flex flex-col flex-1 justify-between">
-        <div className="flex flex-col gap-y-1">
-          {/* Category */}
-          <span className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 font-semibold">
-            {categoryName}
-          </span>
-
-          <div className="flex justify-between items-start gap-x-2">
-            {/* Title */}
-            <h3 className="text-sm font-normal text-neutral-900 tracking-wide line-clamp-1" data-testid="product-title">
+      <div className="flex flex-1 flex-col justify-between border-t border-neutral-200 px-4 pb-4 pt-3 small:px-5">
+        <div className="flex flex-col gap-y-2">
+          <div className="flex items-start justify-between gap-x-2">
+            <h3
+              className="line-clamp-1 text-[17px] font-normal leading-[1.2] text-neutral-950"
+              data-testid="product-title"
+            >
               {item.product_title}
             </h3>
-
-            {/* Wishlist toggle */}
             <button
               onClick={(e) => {
                 e.preventDefault()
                 setIsWishlist(!isWishlist)
               }}
-              className="text-neutral-400 hover:text-black transition-colors focus:outline-none shrink-0 mt-0.5"
+              className="mt-0.5 shrink-0 text-neutral-700 transition-colors hover:text-black focus:outline-none"
               aria-label="Wishlist"
             >
               <Heart
-                size={16}
+                size={20}
                 className={isWishlist ? "fill-red-600 text-red-600 scale-105 transition-transform" : ""}
                 strokeWidth={isWishlist ? 0 : 2}
               />
             </button>
           </div>
 
-          {/* Color & Size */}
-          <div className="text-[11px] text-neutral-500 font-light flex items-center gap-x-2 mt-0.5">
-            <span>Color: <strong className="font-normal text-neutral-950">{colorOption}</strong></span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+            {categoryName}
+          </span>
+
+          <div className="flex flex-wrap items-center gap-x-2 text-[12px] font-light text-neutral-500">
+            <span>
+              Size: <strong className="font-normal text-neutral-950">{sizeOption}</strong>
+            </span>
             <span className="text-neutral-300">|</span>
-            <span>Size: <strong className="font-normal text-neutral-950">{sizeOption}</strong></span>
+            <span>
+              Color: <strong className="font-normal text-neutral-950">{colorOption}</strong>
+            </span>
           </div>
         </div>
 
-        {/* Quantity Select and Prices */}
-        <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between gap-x-4">
+        <div className="mt-5 flex items-center justify-between gap-x-4 border-t border-neutral-200 pt-4">
           <select
             value={item.quantity}
             onChange={(e) => changeQuantity(parseInt(e.target.value))}
-            className="bg-transparent border border-neutral-200 hover:border-neutral-400 px-2.5 py-1.5 text-xs font-normal focus:outline-none focus:border-black tracking-wide cursor-pointer transition-colors"
+            className="cursor-pointer border border-neutral-300 bg-transparent px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-neutral-950 transition-colors hover:border-neutral-500 focus:border-black focus:outline-none"
             data-testid="product-select-button"
           >
             {Array.from({ length: Math.min(maxQuantity, 10) }, (_, i) => (
               <option value={i + 1} key={i}>
-                Qty: {i + 1}
+                Qty {i + 1}
               </option>
             ))}
           </select>
 
           <div className="flex flex-col items-end">
-            <span className="text-xs text-neutral-400">
+            <span className="text-[11px] text-neutral-400">
               <LineItemUnitPrice
                 item={item}
                 style="tight"
                 currencyCode={currencyCode}
               />
             </span>
-            <span className="text-sm font-semibold text-neutral-950 mt-0.5">
+            <span className="mt-0.5 text-[15px] font-semibold text-neutral-950">
               <LineItemPrice
                 item={item}
                 style="tight"

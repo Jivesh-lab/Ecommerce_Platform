@@ -18,7 +18,7 @@ const CheckoutSteps = () => {
   )
 
   return (
-    <div className="mb-14 grid grid-cols-3 gap-x-1">
+    <div className="mb-12 grid grid-cols-3 gap-x-2">
       {steps.map((step, index) => {
         const isActive = index === activeIndex
 
@@ -31,7 +31,7 @@ const CheckoutSteps = () => {
             />
             <span
               className={clx(
-                "pt-3 text-[11px] font-normal tracking-[0.01em] text-neutral-500 small:text-[12px]",
+                "pt-3 text-[12px] font-normal tracking-[0.01em] text-neutral-500",
                 {
                   "text-neutral-950": isActive,
                 }
