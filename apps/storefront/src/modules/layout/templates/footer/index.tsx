@@ -103,7 +103,7 @@ export default function Footer() {
           <LocalizedClientLink href="/account/orders" className={footerLinkClass}>
             My Purchases
           </LocalizedClientLink>
-          <LocalizedClientLink href="/help" className={footerLinkClass}>
+          <LocalizedClientLink href="/returns" className={footerLinkClass}>
             Returns
           </LocalizedClientLink>
         </div>

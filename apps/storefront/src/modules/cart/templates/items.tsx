@@ -8,10 +8,14 @@ type ItemsTemplateProps = {
 
 const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
   const items = cart?.items
+  const gridClassName =
+    items && items.length >= 3
+      ? "grid-cols-1 gap-y-8 xsmall:grid-cols-2 small:grid-cols-3 xsmall:gap-x-[1px] xsmall:gap-y-0"
+      : "grid-cols-1 gap-y-8 xsmall:grid-cols-2 xsmall:gap-x-[1px] xsmall:gap-y-0"
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 xsmall:grid-cols-2 gap-x-0 gap-y-8">
+      <div className={`grid ${gridClassName}`}>
         {items
           ? items
               .sort((a, b) => {
@@ -31,7 +35,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
               return (
                 <div 
                   key={i} 
-                  className="w-full aspect-[3/4] bg-neutral-100 animate-pulse border border-neutral-200"
+                  className="w-full aspect-[35/49] bg-neutral-100 animate-pulse border border-neutral-200"
                 />
               )
             })}

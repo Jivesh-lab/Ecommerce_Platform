@@ -26,44 +26,38 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   } = totals
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="flex flex-col gap-y-3 text-sm text-neutral-700">
+    <div className="flex w-full flex-col font-sans">
+      <dl className="flex flex-col gap-y-3 m-0 p-0 text-[#111111] text-[13px]">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
-            Subtotal
-          </span>
-          <span
+          <dt className="font-normal m-0">Subtotal</dt>
+          <dd
             data-testid="cart-subtotal"
             data-value={item_subtotal || 0}
-            className="text-base font-normal text-neutral-950"
+            className="font-normal m-0"
           >
             {convertToLocale({ amount: item_subtotal ?? 0, currency_code })}
-          </span>
+          </dd>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
-            Delivery
-          </span>
-          <span
+          <dt className="font-normal m-0">Delivery</dt>
+          <dd
             data-testid="cart-shipping"
             data-value={shipping_subtotal || 0}
-            className="text-base font-normal text-neutral-950"
+            className="font-normal m-0"
           >
             {shipping_subtotal === 0
               ? "Free"
               : convertToLocale({ amount: shipping_subtotal ?? 0, currency_code })
             }
-          </span>
+          </dd>
         </div>
 
         {!!discount_subtotal && (
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-600">
-              Discount
-            </span>
-            <span
-              className="text-sm font-semibold text-rose-600"
+            <dt className="font-normal m-0">Discount</dt>
+            <dd
+              className="font-normal m-0"
               data-testid="cart-discount"
               data-value={discount_subtotal || 0}
             >
@@ -72,45 +66,22 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
                 amount: discount_subtotal ?? 0,
                 currency_code,
               })}
-            </span>
+            </dd>
           </div>
         )}
 
-        {!!tax_total && (
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
-              Taxes
-            </span>
-            <span
-              data-testid="cart-taxes"
-              data-value={tax_total || 0}
-              className="text-sm text-neutral-500"
-            >
-              {convertToLocale({ amount: tax_total ?? 0, currency_code })}
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className="my-6 w-full border-b border-neutral-200" />
-
-      <div className="flex flex-col gap-y-1">
-        <div className="flex items-baseline justify-between text-neutral-950">
-          <span className="text-sm font-semibold uppercase tracking-[0.18em]">
-            Total
-          </span>
-          <span
-            className="text-[2rem] font-semibold leading-none tracking-[-0.02em]"
+        <div className="flex items-center justify-between pt-4 pb-1">
+          <dt className="text-[14px] font-bold uppercase m-0">TOTAL</dt>
+          <dd
             data-testid="cart-total"
             data-value={total || 0}
+            className="text-[14px] font-bold uppercase m-0"
           >
             {convertToLocale({ amount: total ?? 0, currency_code })}
-          </span>
+          </dd>
         </div>
-        <span className="self-start text-sm font-light tracking-[0.01em] text-neutral-500">
-          Taxes included
-        </span>
-      </div>
+      </dl>
+      <p className="text-[12px] text-[#555555] font-light mt-1">Taxes included</p>
     </div>
   )
 }

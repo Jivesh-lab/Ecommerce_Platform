@@ -19,30 +19,24 @@ const CartTemplate = ({
   const totalItems = cart?.items?.reduce((acc, item) => acc + (item.quantity || 0), 0) || 0
 
   return (
-    <div className="pt-8 pb-16 bg-white min-h-screen font-sans">
-      <div className="max-w-none mx-auto px-6 sm:px-8 xl:px-10" data-testid="cart-container">
+    <div className="min-h-screen bg-white pb-16 pt-6 font-sans">
+      <div className="mx-auto max-w-[1920px] px-2 sm:px-2 xl:px-2" data-testid="cart-container">
         {cart?.items?.length ? (
           <div className="flex flex-col">
-            {/* Header: Shopping Bag (X) */}
-            <div className="mb-8 flex flex-col items-start pb-2">
-              <h2 className="text-[26px] font-semibold uppercase tracking-[0.02em] text-neutral-950">
+            <div className="mb-8 px-5 pt-4 small:px-10">
+              <h2 className="text-[17px] font-semibold uppercase tracking-[-0.02em] text-neutral-950 small:text-[18px]">
                 Shopping Bag ({totalItems})
               </h2>
             </div>
 
-            {/* Two-Column Grid */}
-            <div className="grid grid-cols-1 small:grid-cols-[minmax(0,1fr)_500px] gap-x-16 gap-y-12 items-start">
-              {/* Left Column: Product Cards */}
+            <div className="grid grid-cols-1 items-start gap-y-12 px-2 small:grid-cols-[minmax(0,1fr)_470px] small:gap-x-20 small:px-0">
               <div className="flex flex-col gap-y-8">
                 <ItemsTemplate cart={cart} />
               </div>
 
-              {/* Right Column: Sticky Summary */}
-              <div className="relative">
+              <div className="relative px-5 small:px-0">
                 <div className="sticky top-20">
-                  {cart && cart.region && (
-                    <Summary cart={cart} />
-                  )}
+                  {cart && cart.region && <Summary cart={cart} />}
                 </div>
               </div>
             </div>
