@@ -6,11 +6,9 @@ interface EditorialGridProps {
   leftTitle: string
   leftImage: string
   leftHref: string
-  leftSpan: string
   rightTitle: string
   rightImage: string
   rightHref: string
-  rightSpan: string
   leftImagePosition?: string
   rightImagePosition?: string
 }
@@ -19,18 +17,16 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
   leftTitle,
   leftImage,
   leftHref,
-  leftSpan,
   rightTitle,
   rightImage,
   rightHref,
-  rightSpan,
   leftImagePosition = "center center",
   rightImagePosition = "center center",
 }) => {
   return (
-    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-5 bg-neutral-900 overflow-hidden relative">
+    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-neutral-900 overflow-hidden relative">
       {/* Left Card */}
-      <div className={`relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900 ${leftSpan}`}>
+      <div className={`relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900`}>
         <Image
           src={leftImage}
           alt={leftTitle}
@@ -61,7 +57,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
       </div>
 
       {/* Right Card */}
-      <div className={`relative h-full w-full group overflow-hidden ${rightSpan}`}>
+      <div className={`relative h-full w-full group overflow-hidden`}>
         <Image
           src={rightImage}
           alt={rightTitle}

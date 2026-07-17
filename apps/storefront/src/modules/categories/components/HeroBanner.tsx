@@ -18,7 +18,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = React.memo(({
   imagePosition = "center center",
 }) => {
   return (
-    <section className="relative w-full h-[85vh] lg:h-[calc(100vh-80px)] overflow-hidden flex flex-col justify-center items-center text-center text-white">
+    <section className="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center text-center text-white">
       <Image
         src={image}
         alt={title}

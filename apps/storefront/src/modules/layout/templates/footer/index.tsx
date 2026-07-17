@@ -148,7 +148,7 @@ export default function Footer() {
             <LocalizedClientLink href="/privacy-policy" className={footerLinkClass}>
               Privacy Policy and Cookies
             </LocalizedClientLink>
-            <LocalizedClientLink href="/terms-conditions" className={footerLinkClass}>
+            <LocalizedClientLink href="/terms-and-conditions" className={footerLinkClass}>
               Terms and Conditions
             </LocalizedClientLink>
             <LocalizedClientLink href="/ethics" className={footerLinkClass}>

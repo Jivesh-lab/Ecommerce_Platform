@@ -42,9 +42,9 @@ export default async function CategoryTemplate({
   if (editorialConfig) {
     // Fetch dynamic CMS data for this page
     const cmsSections = await getLandingSections(category.handle)
-    
+
     // Helper to find CMS section by layout_type
-    const getCmsSection = (layoutType: string) => 
+    const getCmsSection = (layoutType: string) =>
       cmsSections.find(s => s.layout_type === layoutType)
 
     const heroSection = getCmsSection("hero_banner") || getCmsSection("hero_slider")
@@ -60,7 +60,7 @@ export default async function CategoryTemplate({
 
     return (
       <div className="relative w-full flex flex-col bg-neutral-900">
-        
+
         {/* 1. Fullscreen Editorial Hero Banner Component */}
         <HeroBanner
           title={heroTitle}
@@ -82,16 +82,26 @@ export default async function CategoryTemplate({
               leftTitle={cmsLeft?.title || row.leftTitle}
               leftImage={cmsLeft?.desktop_image || row.leftImage}
               leftHref={cmsLeft?.button_link || `/categories/${category.handle}/${row.leftSlug}`}
-              leftSpan={row.leftSpan}
               leftImagePosition={cmsLeft?.image_position || "center center"}
               rightTitle={cmsRight?.title || row.rightTitle}
               rightImage={cmsRight?.desktop_image || row.rightImage}
               rightHref={cmsRight?.button_link || `/categories/${category.handle}/${row.rightSlug}`}
-              rightSpan={row.rightSpan}
               rightImagePosition={cmsRight?.image_position || "center center"}
             />
           )
         })}
+
+        {/* 3. Full Width Editorial Banners */}
+        {editorialConfig.fullWidthBanners?.map((banner, index) => (
+          <HeroBanner
+            key={`fw-${index}`}
+            title={banner.title}
+            image={banner.image}
+            ctaText="DISCOVER MORE"
+            ctaHref={`/categories/${category.handle}/${banner.slug}`}
+            imagePosition="center center"
+          />
+        ))}
       </div>
     )
   }

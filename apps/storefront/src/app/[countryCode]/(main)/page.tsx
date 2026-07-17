@@ -49,30 +49,6 @@ export default async function Home(props: {
 
       {/* 2. Magazine-like Editorial Campaign Flow */}
       <EditorialFlow />
-
-      {/* 3. Product Showcases */}
-      {pricedProducts && (
-        <>
-          <FeaturedProductsShowcase 
-            products={pricedProducts} 
-            region={region} 
-            title="Featured Collections"
-            subtitle="Curated styles" 
-          />
-          <FeaturedProductsShowcase 
-            products={pricedProducts} 
-            region={region} 
-            title="Trending Products"
-            subtitle="Most wanted" 
-          />
-          <FeaturedProductsShowcase 
-            products={pricedProducts} 
-            region={region} 
-            title="New Arrivals"
-            subtitle="Just landed" 
-          />
-        </>
-      )}
     </>
   )
 }
