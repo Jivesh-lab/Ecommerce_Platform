@@ -28,7 +28,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
   rightImagePosition = "center center",
 }) => {
   return (
-    <section className="w-full h-screen grid grid-cols-1 md:grid-cols-5 bg-neutral-900 overflow-hidden relative">
+    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-5 bg-neutral-900 overflow-hidden relative">
       {/* Left Card */}
       <div className={`relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900 ${leftSpan}`}>
         <Image
@@ -36,7 +36,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           alt={leftTitle}
           fill
           loading="lazy"
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
           style={{
             objectFit: "cover",
             objectPosition: leftImagePosition
@@ -44,9 +44,9 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           sizes="(max-width: 768px) 100vw, 60vw"
           unoptimized
         />
-        <div className="absolute inset-0 bg-black/20 z-10" />
-        <div className="absolute bottom-12 left-12 z-20 text-white select-none">
-          <h2 className="text-3xl font-light uppercase tracking-[0.15em] mb-4 leading-none">
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-1000 z-10" />
+        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 text-white select-none">
+          <h2 className="text-2xl md:text-3xl font-medium uppercase tracking-[0.15em] mb-4 leading-none">
             {leftTitle}
           </h2>
           <div>
@@ -67,7 +67,7 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           alt={rightTitle}
           fill
           loading="lazy"
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.02]"
           style={{
             objectFit: "cover",
             objectPosition: rightImagePosition
@@ -75,9 +75,9 @@ export const EditorialGrid: React.FC<EditorialGridProps> = React.memo(({
           sizes="(max-width: 768px) 100vw, 60vw"
           unoptimized
         />
-        <div className="absolute inset-0 bg-black/20 z-10" />
-        <div className="absolute bottom-12 left-12 z-20 text-white select-none">
-          <h2 className="text-3xl font-light uppercase tracking-[0.15em] mb-4 leading-none">
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-1000 z-10" />
+        <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 text-white select-none">
+          <h2 className="text-2xl md:text-3xl font-medium uppercase tracking-[0.15em] mb-4 leading-none">
             {rightTitle}
           </h2>
           <div>

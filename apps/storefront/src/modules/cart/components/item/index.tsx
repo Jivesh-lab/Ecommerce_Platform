@@ -66,12 +66,15 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   // -------------------------------------------------------------
   if (type === "preview") {
     return (
-      <Table.Row className="w-full border-b border-neutral-100" data-testid="product-row">
-        <Table.Cell className="!pl-0 p-4 w-16">
+      <Table.Row
+        className="w-full border-b border-neutral-200 hover:bg-transparent"
+        data-testid="product-row"
+      >
+        <Table.Cell className="w-24 !pl-0 px-0 py-6 align-top">
           <LocalizedClientLink
             href={`/products/${item.product_handle}`}
-            className="flex w-12 relative overflow-hidden bg-neutral-50"
-            style={{ aspectRatio: "1 / 1" }}
+            className="relative flex w-20 overflow-hidden bg-neutral-50"
+            style={{ aspectRatio: "3 / 4" }}
           >
             {item.thumbnail ? (
               <Image
@@ -80,7 +83,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
                 fill
                 className="object-cover object-center"
                 draggable={false}
-                sizes="64px"
+                sizes="80px"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-neutral-100">
@@ -90,25 +93,22 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           </LocalizedClientLink>
         </Table.Cell>
 
-        <Table.Cell className="text-left">
-          <Text className="text-xs font-semibold text-neutral-900 line-clamp-1" data-testid="product-title">
+        <Table.Cell className="py-6 pl-0 pr-4 text-left align-top">
+          <Text
+            className="mb-1 line-clamp-1 text-sm font-normal tracking-[0.02em] text-neutral-900"
+            data-testid="product-title"
+          >
             {item.product_title}
           </Text>
-          <Text className="text-[10px] text-neutral-400">
-            Size: {sizeOption} | Color: {colorOption}
-          </Text>
+          <div className="flex flex-col gap-y-1 text-[12px] font-light text-neutral-600">
+            <span>Quantity: {item.quantity}</span>
+            <span>Size: {sizeOption}</span>
+            <span>{colorOption}</span>
+          </div>
         </Table.Cell>
 
-        <Table.Cell className="!pr-0">
-          <span className="flex flex-col items-end h-full justify-center text-xs">
-            <span className="flex gap-x-1">
-              <Text className="text-neutral-500">{item.quantity}x </Text>
-              <LineItemUnitPrice
-                item={item}
-                style="tight"
-                currencyCode={currencyCode}
-              />
-            </span>
+        <Table.Cell className="!pr-0 py-6 align-top">
+          <span className="flex flex-col items-end text-sm font-semibold text-neutral-900">
             <LineItemPrice
               item={item}
               style="tight"

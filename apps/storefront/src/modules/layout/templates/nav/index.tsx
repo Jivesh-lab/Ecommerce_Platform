@@ -3,17 +3,20 @@ import { Suspense } from "react"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
 import { listRegions } from "@lib/data/regions"
+import { retrieveCustomer } from "@lib/data/customer"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
+import AccountDropdown from "@modules/layout/components/account-dropdown"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, customer] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    retrieveCustomer(),
   ])
 
   return (
@@ -49,13 +52,20 @@ export default async function Nav() {
                 Search
               </LocalizedClientLink>
               
-              <LocalizedClientLink
-                href="/account"
-                className="hover:text-[#555555] transition-colors duration-200"
-                data-testid="nav-account-link"
-              >
-                My Account
-              </LocalizedClientLink>
+              <div className="h-full flex items-center">
+                <Suspense
+                  fallback={
+                    <LocalizedClientLink
+                      href="/account"
+                      className="hover:text-[#555555] transition-colors duration-200"
+                    >
+                      My Account
+                    </LocalizedClientLink>
+                  }
+                >
+                  <AccountDropdown customer={customer} />
+                </Suspense>
+              </div>
               
               <LocalizedClientLink
                 href="/wishlist"

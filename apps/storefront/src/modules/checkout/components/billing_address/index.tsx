@@ -29,7 +29,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 small:grid-cols-2">
         <Input
           label="First name"
           name="billing_address.first_name"
@@ -37,6 +37,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           value={formData["billing_address.first_name"]}
           onChange={handleChange}
           required
+          wrapperClassName="small:col-span-1"
           data-testid="billing-first-name-input"
         />
         <Input
@@ -46,6 +47,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           value={formData["billing_address.last_name"]}
           onChange={handleChange}
           required
+          wrapperClassName="small:col-span-1"
           data-testid="billing-last-name-input"
         />
         <Input
@@ -55,6 +57,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           value={formData["billing_address.address_1"]}
           onChange={handleChange}
           required
+          wrapperClassName="small:col-span-1"
           data-testid="billing-address-input"
         />
         <Input
@@ -63,6 +66,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           value={formData["billing_address.company"]}
           onChange={handleChange}
           autoComplete="organization"
+          wrapperClassName="small:col-span-1"
           data-testid="billing-company-input"
         />
         <Input
@@ -72,6 +76,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           value={formData["billing_address.postal_code"]}
           onChange={handleChange}
           required
+          wrapperClassName="small:col-span-1"
           data-testid="billing-postal-input"
         />
         <Input
@@ -80,22 +85,30 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           autoComplete="address-level2"
           value={formData["billing_address.city"]}
           onChange={handleChange}
+          wrapperClassName="small:col-span-1"
         />
-        <CountrySelect
-          name="billing_address.country_code"
-          autoComplete="country"
-          region={cart?.region}
-          value={formData["billing_address.country_code"]}
-          onChange={handleChange}
-          required
-          data-testid="billing-country-select"
-        />
+        <div className="relative w-full">
+          <label className="pointer-events-none absolute left-4 top-3 z-10 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+            Country
+            <span className="ml-1 text-rose-500">*</span>
+          </label>
+          <CountrySelect
+            name="billing_address.country_code"
+            autoComplete="country"
+            region={cart?.region}
+            value={formData["billing_address.country_code"]}
+            onChange={handleChange}
+            required
+            data-testid="billing-country-select"
+          />
+        </div>
         <Input
           label="State / Province"
           name="billing_address.province"
           autoComplete="address-level1"
           value={formData["billing_address.province"]}
           onChange={handleChange}
+          wrapperClassName="small:col-span-1"
           data-testid="billing-province-input"
         />
         <Input
@@ -104,6 +117,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           autoComplete="tel"
           value={formData["billing_address.phone"]}
           onChange={handleChange}
+          wrapperClassName="small:col-span-1"
           data-testid="billing-phone-input"
         />
       </div>

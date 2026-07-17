@@ -47,7 +47,7 @@ export default async function CategoryTemplate({
     const getCmsSection = (layoutType: string) => 
       cmsSections.find(s => s.layout_type === layoutType)
 
-    const heroSection = getCmsSection("hero_slider")
+    const heroSection = getCmsSection("hero_banner") || getCmsSection("hero_slider")
     const splitSection = getCmsSection("split_banner") || getCmsSection("editorial_banner")
 
     // Merge Hero Data

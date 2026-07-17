@@ -75,6 +75,7 @@
           "comment": null,
           "enumItems": [
             "hero_slider",
+            "hero_banner",
             "split_banner",
             "editorial_banner",
             "product_showcase",

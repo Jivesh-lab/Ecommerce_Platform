@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Drawer, Button, Input, Label, Switch, Select, toast } from "@medusajs/ui"
 import { sdk } from "../../../../../lib/config"
 
@@ -7,7 +7,7 @@ type Section = {
   id?: string
   page: string
   section_key: string
-  layout_type: "hero_slider" | "split_banner" | "editorial_banner" | "product_showcase" | "video_banner" | "newsletter" | "custom"
+  layout_type: "hero_slider" | "hero_banner" | "split_banner" | "editorial_banner" | "product_showcase" | "video_banner" | "newsletter" | "custom"
   display_order: number
   is_visible: boolean
   max_items: number | null
@@ -21,6 +21,17 @@ type Props = {
   onSuccess: () => void
 }
 
+const LAYOUT_OPTIONS = [
+  { value: "hero_banner", label: "Hero Banner" },
+  { value: "hero_slider", label: "Hero Slider" },
+  { value: "split_banner", label: "Split Banner" },
+  { value: "editorial_banner", label: "Editorial Banner" },
+  { value: "product_showcase", label: "Product Showcase" },
+  { value: "video_banner", label: "Video Banner" },
+  { value: "newsletter", label: "Newsletter" },
+  { value: "custom", label: "Custom" }
+]
+
 export function SectionForm({ open, onOpenChange, section, defaultPage, onSuccess }: Props) {
   const isEdit = !!section?.id
   const [loading, setLoading] = useState(false)
@@ -33,6 +44,16 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
   const [maxItems, setMaxItems] = useState(section?.max_items?.toString() || "")
   const [isVisible, setIsVisible] = useState(section?.is_visible ?? true)
 
+  useEffect(() => {
+    if (open) {
+      setPage(section?.page || defaultPage || "home")
+      setSectionKey(section?.section_key || "")
+      setLayoutType(section?.layout_type || "custom")
+      setDisplayOrder(section?.display_order?.toString() || "0")
+      setMaxItems(section?.max_items?.toString() || "")
+      setIsVisible(section?.is_visible ?? true)
+    }
+  }, [section, defaultPage, open])
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -59,7 +80,7 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
         })
         toast.success("Section created successfully")
       }
-      
+
       onSuccess()
       onOpenChange(false)
     } catch (error: any) {
@@ -77,7 +98,7 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
         </Drawer.Header>
         <form onSubmit={handleSubmit} className="flex flex-col h-full overflow-hidden">
           <Drawer.Body className="flex-1 overflow-y-auto flex flex-col gap-6 p-6">
-            
+
             <div className="flex flex-col gap-4">
               <div className="flex gap-4">
                 <div className="flex-1 flex flex-col gap-2">
@@ -105,13 +126,11 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
                   <Select value={layoutType} onValueChange={(val: any) => setLayoutType(val)}>
                     <Select.Trigger><Select.Value /></Select.Trigger>
                     <Select.Content className="z-[999]">
-                      <Select.Item value="hero_slider">Hero Slider</Select.Item>
-                      <Select.Item value="split_banner">Split Banner</Select.Item>
-                      <Select.Item value="editorial_banner">Editorial Banner</Select.Item>
-                      <Select.Item value="product_showcase">Product Showcase</Select.Item>
-                      <Select.Item value="video_banner">Video Banner</Select.Item>
-                      <Select.Item value="newsletter">Newsletter</Select.Item>
-                      <Select.Item value="custom">Custom</Select.Item>
+                      {LAYOUT_OPTIONS.map((option) => (
+                        <Select.Item key={option.value} value={option.value}>
+                          {option.label}
+                        </Select.Item>
+                      ))}
                     </Select.Content>
                   </Select>
                 </div>
