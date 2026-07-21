@@ -68,7 +68,11 @@ export class CloudinaryFileProviderService extends AbstractFileProviderService {
     // Cloudinary public IDs don't include the extension; keep the original
     // name for readability and append a random suffix to avoid collisions.
     const parsed = path.parse(file.filename)
-    const publicId = `${parsed.name}-${randomUUID()}`
+    // Sanitize: replace spaces and non-URL-safe chars with hyphens to avoid
+    // Cloudinary signature mismatches (spaces in public_id corrupt the
+    // "string to sign" that the SDK hashes against the API secret).
+    const safeName = parsed.name.replace(/[^a-zA-Z0-9_-]/g, "-")
+    const publicId = `${safeName}-${randomUUID()}`
     const dataUri = `data:${file.mimeType};base64,${file.content}`
 
     try {

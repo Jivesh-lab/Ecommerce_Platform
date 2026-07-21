@@ -7,7 +7,7 @@ type Section = {
   id?: string
   page: string
   section_key: string
-  layout_type: "hero_slider" | "split_banner" | "editorial_banner" | "product_showcase" | "video_banner" | "newsletter" | "custom"
+  layout_type: "hero_slider" | "hero_banner" | "split_banner" | "editorial_banner" | "product_showcase" | "video_banner" | "newsletter" | "custom"
   display_order: number
   is_visible: boolean
   max_items: number | null
@@ -28,7 +28,7 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
   // Form State
   const [page, setPage] = useState(section?.page || defaultPage || "home")
   const [sectionKey, setSectionKey] = useState(section?.section_key || "")
-  const [layoutType, setLayoutType] = useState(section?.layout_type || "custom")
+  const [layoutType, setLayoutType] = useState(section?.layout_type || "hero_slider")
   const [displayOrder, setDisplayOrder] = useState(section?.display_order?.toString() || "0")
   const [maxItems, setMaxItems] = useState(section?.max_items?.toString() || "")
   const [isVisible, setIsVisible] = useState(section?.is_visible ?? true)
@@ -82,7 +82,7 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
               <div className="flex gap-4">
                 <div className="flex-1 flex flex-col gap-2">
                   <Label>Page *</Label>
-                  <Select value={page} onValueChange={setPage}>
+                  <Select value={page} onValueChange={setPage} disabled={true}>
                     <Select.Trigger><Select.Value /></Select.Trigger>
                     <Select.Content className="z-[999]">
                       <Select.Item value="home">Home</Select.Item>
@@ -106,11 +106,12 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
                     <Select.Trigger><Select.Value /></Select.Trigger>
                     <Select.Content className="z-[999]">
                       <Select.Item value="hero_slider">Hero Slider</Select.Item>
+                      <Select.Item value="hero_banner">Hero Banner</Select.Item>
                       <Select.Item value="split_banner">Split Banner</Select.Item>
                       <Select.Item value="editorial_banner">Editorial Banner</Select.Item>
                       <Select.Item value="product_showcase">Product Showcase</Select.Item>
-                      <Select.Item value="video_banner">Video Banner</Select.Item>
                       <Select.Item value="newsletter">Newsletter</Select.Item>
+                      <Select.Item value="video_banner">Video Banner</Select.Item>
                       <Select.Item value="custom">Custom</Select.Item>
                     </Select.Content>
                   </Select>

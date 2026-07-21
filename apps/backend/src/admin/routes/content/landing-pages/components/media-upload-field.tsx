@@ -19,6 +19,7 @@ export function MediaUploadField({
   helperText,
   accept = "image/*",
 }: Props) {
+  const MedusaButton = Button as any
   const inputId = useId()
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -70,9 +71,9 @@ export function MediaUploadField({
         </div>
 
         {value && !uploading && (
-          <Button size="small" variant="secondary" type="button" onClick={handleClear}>
+          <MedusaButton size="small" variant="secondary" type="button" onClick={handleClear}>
             Remove
-          </Button>
+          </MedusaButton>
         )}
       </div>
 

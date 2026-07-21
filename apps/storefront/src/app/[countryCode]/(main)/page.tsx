@@ -1,12 +1,11 @@
 import { Metadata } from "next"
 
-import Hero from "@modules/home/components/hero"
-import EditorialFlow from "@modules/home/components/editorial-flow"
-import FeaturedProductsShowcase from "@modules/home/components/featured-products/showcase"
+import LandingRenderer from "@modules/home/components/landing-renderer"
 
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import { listProducts } from "@lib/data/products"
+import { getLandingSections } from "@lib/data/landing-pages"
 
 export const metadata: Metadata = {
   title: "Bacoola Store | Modern Essentials & Luxury Couture",
@@ -42,15 +41,12 @@ export default async function Home(props: {
     },
   })
 
+  // Fetch CMS sections for Homepage
+  const cmsSections = await getLandingSections("home")
+
   return (
     <>
-      {/* 1. Cinematic Hero Slider */}
-      <Hero />
-
-      {/* 2. Magazine-like Editorial Campaign Flow */}
-      <EditorialFlow />
+      <LandingRenderer sections={cmsSections || []} pageName="home" />
     </>
   )
 }
-
-
