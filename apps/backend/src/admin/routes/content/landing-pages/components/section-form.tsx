@@ -29,7 +29,6 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
   const [page, setPage] = useState(section?.page || defaultPage || "home")
   const [sectionKey, setSectionKey] = useState(section?.section_key || "")
   const [layoutType, setLayoutType] = useState(section?.layout_type || "hero_slider")
-  const [displayOrder, setDisplayOrder] = useState(section?.display_order?.toString() || "0")
   const [maxItems, setMaxItems] = useState(section?.max_items?.toString() || "")
   const [isVisible, setIsVisible] = useState(section?.is_visible ?? true)
 
@@ -41,7 +40,6 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
         page,
         section_key: sectionKey,
         layout_type: layoutType,
-        display_order: parseInt(displayOrder, 10),
         max_items: maxItems ? parseInt(maxItems, 10) : null,
         is_visible: isVisible,
       }
@@ -123,15 +121,9 @@ export function SectionForm({ open, onOpenChange, section, defaultPage, onSucces
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-1 flex flex-col gap-2">
-                  <Label>Display Order *</Label>
-                  <Input type="number" value={displayOrder} onChange={(e) => setDisplayOrder(e.target.value)} required />
-                </div>
-                <div className="flex-1 flex flex-col gap-2 items-start justify-center">
-                  <div className="flex items-center gap-2 mt-4">
-                    <Switch checked={isVisible} onCheckedChange={setIsVisible} />
-                    <Label>Visible</Label>
-                  </div>
+                <div className="flex items-center gap-2 mt-2">
+                  <Switch checked={isVisible} onCheckedChange={setIsVisible} />
+                  <Label>Visible</Label>
                 </div>
               </div>
             </div>

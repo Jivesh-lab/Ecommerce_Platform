@@ -45,7 +45,7 @@ const fallbackCampaigns: Record<string, any[]> = {
       title: "Modern Essentials",
       button_text: "Shop Men",
       button_link: "/categories/men",
-      desktop_image: "/images/campaign-3.jpg",
+      desktop_image: "/images/campaign-5.jpg",
     },
   ],
   kids: [
@@ -80,6 +80,7 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
       button_text: cmsItem.button_text || fallbackItem.button_text,
       button_link: cmsItem.button_link || fallbackItem.button_link,
       desktop_image: cmsItem.desktop_image || cmsItem.mobile_image || fallbackItem.desktop_image,
+      image_position: cmsItem.image_position,
     }
   })
 
@@ -99,6 +100,7 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
               alt={campaign.title || "Hero Campaign"}
               priority={index === 0}
               className="object-cover object-center w-full h-full"
+              style={{ objectPosition: campaign.image_position || "center" }}
             />
             {/* Subtle overlay for typography readability */}
 

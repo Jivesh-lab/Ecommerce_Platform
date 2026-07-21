@@ -7,6 +7,8 @@ interface DoubleCampaignProps {
   leftImage: string
   rightTitle: string
   rightImage: string
+  leftImagePosition?: string
+  rightImagePosition?: string
   ctaText?: string
   link?: string
 }
@@ -16,17 +18,20 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
   leftImage,
   rightTitle,
   rightImage,
+  leftImagePosition = "center center",
+  rightImagePosition = "center center",
   ctaText = "SEE ALL",
   link = "/store",
 }) => {
   return (
-    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-neutral-900 overflow-hidden relative">
+    <section className="w-full h-auto aspect-[4/5] md:aspect-[2/1] grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-neutral-900 overflow-hidden relative">
       {/* Left Column */}
       <div className="relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900 flex [&>picture]:w-full [&>picture]:h-full">
         <CloudinaryImage
           src={leftImage}
           alt={leftTitle}
           className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
+          style={{ objectPosition: leftImagePosition }}
         />
 
         <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 text-white select-none">
@@ -50,6 +55,7 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
           src={rightImage}
           alt={rightTitle}
           className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
+          style={{ objectPosition: rightImagePosition }}
         />
 
         <div className="absolute bottom-8 left-6 md:bottom-12 md:left-12 z-20 text-white select-none">
@@ -73,6 +79,7 @@ const DoubleCampaign: React.FC<DoubleCampaignProps> = ({
 interface FullWidthCampaignProps {
   title: string
   image: string
+  imagePosition?: string
   ctaText?: string
   link?: string
 }
@@ -80,6 +87,7 @@ interface FullWidthCampaignProps {
 const FullWidthCampaign: React.FC<FullWidthCampaignProps> = ({
   title,
   image,
+  imagePosition = "center center",
   ctaText = "DISCOVER MORE",
   link = "/store",
 }) => {
@@ -90,6 +98,7 @@ const FullWidthCampaign: React.FC<FullWidthCampaignProps> = ({
           src={image}
           alt={title}
           className="object-cover object-center w-full h-full"
+          style={{ objectPosition: imagePosition }}
         />
       </div>
 
@@ -186,6 +195,7 @@ const EditorialFlow: React.FC<EditorialFlowProps> = ({ sections, pageName = "hom
       title: cmsItem.title || fallbackItem.title,
       // Cascading image check: CMS Desktop -> CMS Mobile -> Fallback Desktop
       desktop_image: cmsItem.desktop_image || cmsItem.mobile_image || fallbackItem.desktop_image,
+      image_position: cmsItem.image_position,
       button_text: cmsItem.button_text || fallbackItem.button_text,
       button_link: cmsItem.button_link || fallbackItem.button_link,
     }
@@ -198,8 +208,10 @@ const EditorialFlow: React.FC<EditorialFlowProps> = ({ sections, pageName = "hom
       <DoubleCampaign
         leftTitle={mergedItems[0].title || ""}
         leftImage={mergedItems[0].desktop_image || ""}
+        leftImagePosition={mergedItems[0].image_position}
         rightTitle={mergedItems[1].title || ""}
         rightImage={mergedItems[1].desktop_image || ""}
+        rightImagePosition={mergedItems[1].image_position}
         ctaText={mergedItems[0].button_text || "SEE ALL"}
         link={mergedItems[0].button_link || "/store"}
       />
@@ -208,8 +220,10 @@ const EditorialFlow: React.FC<EditorialFlowProps> = ({ sections, pageName = "hom
       <DoubleCampaign
         leftTitle={mergedItems[2].title || ""}
         leftImage={mergedItems[2].desktop_image || ""}
+        leftImagePosition={mergedItems[2].image_position}
         rightTitle={mergedItems[3].title || ""}
         rightImage={mergedItems[3].desktop_image || ""}
+        rightImagePosition={mergedItems[3].image_position}
         ctaText={mergedItems[2].button_text || "SEE ALL"}
         link={mergedItems[2].button_link || "/store"}
       />
@@ -218,6 +232,7 @@ const EditorialFlow: React.FC<EditorialFlowProps> = ({ sections, pageName = "hom
       <FullWidthCampaign
         title={mergedItems[4].title || ""}
         image={mergedItems[4].desktop_image || ""}
+        imagePosition={mergedItems[4].image_position}
         ctaText={mergedItems[4].button_text || "DISCOVER MORE"}
         link={mergedItems[4].button_link || "/store"}
       />
@@ -226,6 +241,7 @@ const EditorialFlow: React.FC<EditorialFlowProps> = ({ sections, pageName = "hom
       <FullWidthCampaign
         title={mergedItems[5].title || ""}
         image={mergedItems[5].desktop_image || ""}
+        imagePosition={mergedItems[5].image_position}
         ctaText={mergedItems[5].button_text || "DISCOVER MORE"}
         link={mergedItems[5].button_link || "/store"}
       />
@@ -234,6 +250,7 @@ const EditorialFlow: React.FC<EditorialFlowProps> = ({ sections, pageName = "hom
       <FullWidthCampaign
         title={mergedItems[6].title || ""}
         image={mergedItems[6].desktop_image || ""}
+        imagePosition={mergedItems[6].image_position}
         ctaText={mergedItems[6].button_text || "DISCOVER MORE"}
         link={mergedItems[6].button_link || "/store"}
       />

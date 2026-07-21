@@ -29,9 +29,17 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const landingPageService: LandingPageService = req.scope.resolve(LANDING_PAGE_MODULE)
 
-  const section = await landingPageService.createLandingSections(
-    req.body as Record<string, unknown>
-  )
+  const payload = req.body as Record<string, unknown>
+
+  // Auto-assign display order
+  const existingSections = await landingPageService.listLandingSections({ page: payload.page as string })
+  const nextOrder = existingSections.length > 0 
+    ? Math.max(...existingSections.map((s: any) => s.display_order)) + 1 
+    : 1
+    
+  payload.display_order = nextOrder
+
+  const section = await landingPageService.createLandingSections(payload)
 
   res.status(201).json({ section })
 }

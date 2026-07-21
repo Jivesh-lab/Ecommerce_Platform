@@ -20,6 +20,7 @@ export const EditorialBanner: React.FC<EditorialBannerProps> = ({ items }) => {
   const image = item.desktop_image || item.mobile_image || fallbackItem.desktop_image
   const link = item.button_link || fallbackItem.button_link
   const ctaText = item.button_text || fallbackItem.button_text
+  const imagePosition = item.image_position || "center center"
 
   return (
     <section className="w-full h-screen relative bg-neutral-900 overflow-hidden flex flex-col justify-center items-center text-center text-white">
@@ -27,7 +28,8 @@ export const EditorialBanner: React.FC<EditorialBannerProps> = ({ items }) => {
         <CloudinaryImage
           src={image}
           alt={title}
-          className="object-cover object-center w-full h-full"
+          className="object-cover transition-transform duration-1000 ease-out w-full h-full"
+          style={{ objectPosition: imagePosition }}
         />
       </div>
 

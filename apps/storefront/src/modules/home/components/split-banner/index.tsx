@@ -26,14 +26,18 @@ export const SplitBanner: React.FC<SplitBannerProps> = ({ items, fallbackItems =
   const rightLink = rightItem.button_link || fallbackItems[1].button_link
   const rightButtonText = rightItem.button_text || fallbackItems[1].button_text
 
+  const leftPosition = leftItem.image_position || "center center"
+  const rightPosition = rightItem.image_position || "center center"
+
   return (
-    <section className="w-full h-[100vh] md:h-screen grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-neutral-900 overflow-hidden relative">
+    <section className="w-full h-auto aspect-[4/5] md:aspect-[2/1] grid grid-cols-1 grid-rows-2 md:grid-rows-1 md:grid-cols-2 bg-neutral-900 overflow-hidden relative">
       {/* Left Column */}
       <div className="relative h-full w-full group overflow-hidden border-b md:border-b-0 md:border-r border-neutral-900 flex [&>picture]:w-full [&>picture]:h-full">
         <CloudinaryImage
           src={leftImage}
           alt={leftTitle}
-          className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
+          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
+          style={{ objectPosition: leftPosition }}
         />
 
         <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 z-20 text-white select-none flex justify-between items-center">
@@ -54,7 +58,8 @@ export const SplitBanner: React.FC<SplitBannerProps> = ({ items, fallbackItems =
         <CloudinaryImage
           src={rightImage}
           alt={rightTitle}
-          className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
+          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.02] w-full h-full"
+          style={{ objectPosition: rightPosition }}
         />
 
         <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 z-20 text-white select-none flex justify-between items-center">

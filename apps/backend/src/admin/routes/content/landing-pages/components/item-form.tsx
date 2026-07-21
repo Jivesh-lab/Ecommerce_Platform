@@ -170,16 +170,18 @@ export function ItemForm({ open, onOpenChange, item, sectionId, onSuccess }: Pro
               <Label className="text-ui-fg-base font-semibold">Media</Label>
               <div className="grid gap-4 lg:grid-cols-2">
                 <MediaUploadField
-                  label="Desktop Image Upload"
+                  label="Desktop Media Upload"
                   value={desktopImage}
                   onChange={setDesktopImage}
                   helperText="Uploads immediately to Cloudinary and stores only the URL."
+                  accept="image/*,video/*"
                 />
                 <MediaUploadField
-                  label="Mobile Image Upload"
+                  label="Mobile Media Upload"
                   value={mobileImage}
                   onChange={setMobileImage}
                   helperText="Optional. If omitted, the storefront keeps the existing local asset."
+                  accept="image/*,video/*"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -198,17 +200,6 @@ export function ItemForm({ open, onOpenChange, item, sectionId, onSuccess }: Pro
                     <Select.Item value="right bottom">Bottom Right</Select.Item>
                   </Select.Content>
                 </Select>
-              </div>
-              <div className="flex flex-col gap-2 rounded-lg border border-ui-border-base bg-ui-bg-base p-4">
-                <Label>Video Upload (future support)</Label>
-                <Input type="file" accept="video/*" disabled />
-                <p className="text-xs text-ui-fg-subtle">
-                  Placeholder for later. Use the Video URL field below for now.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label>Video URL</Label>
-                <Input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
               </div>
             </div>
 

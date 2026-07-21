@@ -23,7 +23,7 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50">
-      <header className="relative h-[76px] mx-auto border-b border-[#ECECEC] bg-white transition-colors duration-200">
+      <header className="relative h-[60px] mx-auto border-b border-[#ECECEC] bg-white transition-colors duration-200">
         <nav className="w-full h-full px-8 small:px-12 max-w-[1550px] mx-auto flex items-center justify-between text-small-regular">
           
           {/* DESKTOP LAYOUT (1024px and wider) */}
@@ -38,7 +38,8 @@ export default async function Nav() {
             <div className="flex justify-center items-center">
               <LocalizedClientLink
                 href="/"
-                className="text-2xl font-bold tracking-[0.25em] text-[#111111] hover:text-[#555555] transition-colors duration-200 uppercase select-none font-sans"
+                className="text-[28px] font-extrabold tracking-[0.25em] text-[#111111] hover:text-[#555555] transition-colors duration-200 uppercase select-none"
+                style={{ fontFamily: 'Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif' }}
                 data-testid="nav-store-link"
               >
                 Bacoola
@@ -46,7 +47,7 @@ export default async function Nav() {
             </div>
 
             {/* Right Section: Actions */}
-            <div className="flex justify-end items-center gap-x-[32px] text-[14px] font-semibold text-[#111111] tracking-wider uppercase h-full">
+            <div className="flex justify-end items-center gap-x-[24px] text-[13px] font-medium text-[#111111] tracking-[0.05em] uppercase h-full">
               <LocalizedClientLink
                 href="/store"
                 className="hover:text-[#555555] transition-colors duration-200"
@@ -77,7 +78,7 @@ export default async function Nav() {
                 <Suspense
                   fallback={
                     <LocalizedClientLink
-                      className="hover:text-[#555555] transition-colors duration-200 uppercase font-semibold text-[14px]"
+                      className="hover:text-[#555555] transition-colors duration-200 uppercase font-medium text-[13px] tracking-[0.05em]"
                       href="/cart"
                     >
                       Bag (0)
@@ -102,7 +103,8 @@ export default async function Nav() {
             <div className="flex items-center justify-center">
               <LocalizedClientLink
                 href="/"
-                className="text-xl font-bold tracking-[0.2em] text-[#111111] uppercase select-none"
+                className="text-2xl font-extrabold tracking-[0.2em] text-[#111111] uppercase select-none"
+                style={{ fontFamily: 'Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif' }}
                 data-testid="nav-store-link"
               >
                 Bacoola
@@ -110,11 +112,11 @@ export default async function Nav() {
             </div>
 
             {/* Right: Mobile Bag Count */}
-            <div className="flex-1 basis-0 flex items-center justify-end text-[14px] font-semibold text-[#111111] uppercase tracking-wider h-full">
+            <div className="flex-1 basis-0 flex items-center justify-end text-[13px] font-medium text-[#111111] uppercase tracking-[0.05em] h-full">
               <Suspense
                 fallback={
                   <LocalizedClientLink
-                    className="hover:text-[#555555] transition-colors duration-200 uppercase font-semibold text-[14px]"
+                    className="hover:text-[#555555] transition-colors duration-200 uppercase font-medium text-[13px] tracking-[0.05em]"
                     href="/cart"
                   >
                     Bag (0)
