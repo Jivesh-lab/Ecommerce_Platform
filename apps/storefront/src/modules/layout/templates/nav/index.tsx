@@ -11,6 +11,7 @@ import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
 import AccountDropdown from "@modules/layout/components/account-dropdown"
 import { retrieveCustomer } from "@lib/data/customer"
+import BacoolaLogo from "@modules/layout/components/bacoola-logo"
 
 export default async function Nav() {
   const [regions, locales, currentLocale, categories, customer] = await Promise.all([
@@ -38,11 +39,10 @@ export default async function Nav() {
             <div className="flex justify-center items-center">
               <LocalizedClientLink
                 href="/"
-                className="text-[28px] font-extrabold tracking-[0.25em] text-[#111111] hover:text-[#555555] transition-colors duration-200 uppercase select-none"
-                style={{ fontFamily: 'Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                className="hover:opacity-70 transition-opacity duration-200"
                 data-testid="nav-store-link"
               >
-                Bacoola
+                <BacoolaLogo height={28} />
               </LocalizedClientLink>
             </div>
 
@@ -103,11 +103,10 @@ export default async function Nav() {
             <div className="flex items-center justify-center">
               <LocalizedClientLink
                 href="/"
-                className="text-2xl font-extrabold tracking-[0.2em] text-[#111111] uppercase select-none"
-                style={{ fontFamily: 'Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif' }}
+                className="hover:opacity-70 transition-opacity duration-200"
                 data-testid="nav-store-link"
               >
-                Bacoola
+                <BacoolaLogo height={24} />
               </LocalizedClientLink>
             </div>
 

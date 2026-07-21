@@ -10,6 +10,7 @@ import { OptionValueIds } from "@lib/util/product-option-filters"
 // Import unified architecture components
 import LandingRenderer from "@modules/home/components/landing-renderer"
 import CategoryProductListing from "./CategoryProductListing"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 import { getLandingSections } from "@lib/data/landing-pages"
 
@@ -72,14 +73,29 @@ export default async function CategoryTemplate({
       <div className="relative w-full flex flex-col bg-neutral-900">
         <LandingRenderer sections={cmsSections || []} pageName={category.handle} />
         
-        {/* Render product grid below editorial flow */}
-        <div className="w-full bg-white">
-          <div className="content-container py-12 md:py-24">
-            <div className="flex flex-col gap-8">
-              <h2 className="text-3xl font-medium tracking-tight uppercase border-b pb-4 border-neutral-200 text-neutral-900">
-                Shop {category.name}
-              </h2>
-              {productGrid}
+        {/* Render horizontal subcategory menu instead of product grid */}
+        <div className="w-full bg-white border-b border-neutral-200">
+          <div className="content-container py-8 md:py-12">
+            <h2 className="text-[13px] font-semibold tracking-widest uppercase text-neutral-900 mb-6">
+              {category.name}
+            </h2>
+            
+            <div className="flex overflow-x-auto gap-8 whitespace-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2">
+              <LocalizedClientLink 
+                href="/store" 
+                className="text-[13px] font-medium tracking-[0.05em] uppercase text-neutral-900 hover:text-neutral-500 transition-colors"
+              >
+                SEE ALL
+              </LocalizedClientLink>
+              {category.category_children?.map((child) => (
+                <LocalizedClientLink 
+                  key={child.id}
+                  href={`/categories/${child.handle}`} 
+                  className="text-[13px] font-medium tracking-[0.05em] uppercase text-neutral-900 hover:text-neutral-500 transition-colors"
+                >
+                  {child.name}
+                </LocalizedClientLink>
+              ))}
             </div>
           </div>
         </div>
