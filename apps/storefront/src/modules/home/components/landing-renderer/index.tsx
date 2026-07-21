@@ -7,9 +7,10 @@ import Newsletter from "@modules/home/components/newsletter"
 interface LandingRendererProps {
   sections: any[]
   pageName: string
+  children?: React.ReactNode
 }
 
-export const LandingRenderer: React.FC<LandingRendererProps> = ({ sections, pageName }) => {
+export const LandingRenderer: React.FC<LandingRendererProps> = ({ sections, pageName, children }) => {
   // Safe extraction of strict layout slots based on layout_type
   const heroSection = sections?.find(s => s.layout_type === "hero_slider" || s.layout_type === "hero_banner")
   const splitBannerSection = sections?.find(s => s.layout_type === "split_banner")
@@ -47,6 +48,9 @@ export const LandingRenderer: React.FC<LandingRendererProps> = ({ sections, page
       <EditorialBanner items={productShowcaseSection?.items ? [productShowcaseSection.items[1]] : [{ title: "Winter Collection", desktop_image: "/images/campaign-6.jpg", button_link: "/store", button_text: "SHOP WINTER" }]} />
       <EditorialBanner items={productShowcaseSection?.items ? [productShowcaseSection.items[2]] : [{ title: "Essentials", desktop_image: "/images/campaign-7.jpg", button_link: "/store", button_text: "SHOP ESSENTIALS" }]} />
       
+      {/* Dynamic Content (e.g. Subcategory Menu) injected before Newsletter */}
+      {children}
+
       {/* 7. Newsletter */}
       <Newsletter />
     </div>

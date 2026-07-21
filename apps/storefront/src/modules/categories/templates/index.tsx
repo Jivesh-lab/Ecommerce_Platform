@@ -11,6 +11,7 @@ import { OptionValueIds } from "@lib/util/product-option-filters"
 import LandingRenderer from "@modules/home/components/landing-renderer"
 import CategoryProductListing from "./CategoryProductListing"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import SubcategoryNav from "../components/subcategory-nav"
 
 import { getLandingSections } from "@lib/data/landing-pages"
 
@@ -71,34 +72,18 @@ export default async function CategoryTemplate({
     const cmsSections = await getLandingSections(category.handle)
     return (
       <div className="relative w-full flex flex-col bg-neutral-900">
-        <LandingRenderer sections={cmsSections || []} pageName={category.handle} />
-        
-        {/* Render horizontal subcategory menu instead of product grid */}
-        <div className="w-full bg-white border-b border-neutral-200">
-          <div className="content-container py-8 md:py-12">
-            <h2 className="text-[13px] font-semibold tracking-widest uppercase text-neutral-900 mb-6">
-              {category.name}
-            </h2>
-            
-            <div className="flex overflow-x-auto gap-8 whitespace-nowrap [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2">
-              <LocalizedClientLink 
-                href="/store" 
-                className="text-[13px] font-medium tracking-[0.05em] uppercase text-neutral-900 hover:text-neutral-500 transition-colors"
-              >
-                SEE ALL
-              </LocalizedClientLink>
-              {category.category_children?.map((child) => (
-                <LocalizedClientLink 
-                  key={child.id}
-                  href={`/categories/${child.handle}`} 
-                  className="text-[13px] font-medium tracking-[0.05em] uppercase text-neutral-900 hover:text-neutral-500 transition-colors"
-                >
-                  {child.name}
-                </LocalizedClientLink>
-              ))}
+        <LandingRenderer sections={cmsSections || []} pageName={category.handle}>
+          {/* Render horizontal subcategory menu instead of product grid */}
+          <div className="w-full bg-white border-b border-neutral-200">
+            <div className="content-container py-8 md:py-12">
+              <h2 className="text-[13px] font-semibold tracking-widest uppercase text-neutral-900 mb-6">
+                {category.name}
+              </h2>
+              
+              <SubcategoryNav category={category} />
             </div>
           </div>
-        </div>
+        </LandingRenderer>
       </div>
     )
   }
