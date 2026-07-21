@@ -10,8 +10,8 @@ import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import HeaderLinks from "@modules/layout/components/header-links"
 import AccountDropdown from "@modules/layout/components/account-dropdown"
+import PromoBanner from "@modules/layout/components/promo-banner"
 import { retrieveCustomer } from "@lib/data/customer"
-import BacoolaLogo from "@modules/layout/components/bacoola-logo"
 
 export default async function Nav() {
   const [regions, locales, currentLocale, categories, customer] = await Promise.all([
@@ -39,10 +39,14 @@ export default async function Nav() {
             <div className="flex justify-center items-center">
               <LocalizedClientLink
                 href="/"
-                className="hover:opacity-70 transition-opacity duration-200"
+                className="flex items-center hover:opacity-80 transition-opacity duration-200"
                 data-testid="nav-store-link"
               >
-                <BacoolaLogo height={28} />
+                <img
+                  src="/images/bacoola-logo.png"
+                  alt="Bacoola"
+                  className="h-[18px] w-auto select-none"
+                />
               </LocalizedClientLink>
             </div>
 
@@ -103,10 +107,14 @@ export default async function Nav() {
             <div className="flex items-center justify-center">
               <LocalizedClientLink
                 href="/"
-                className="hover:opacity-70 transition-opacity duration-200"
+                className="flex items-center hover:opacity-80 transition-opacity duration-200"
                 data-testid="nav-store-link"
               >
-                <BacoolaLogo height={24} />
+                <img
+                  src="/images/bacoola-logo.png"
+                  alt="Bacoola"
+                  className="h-[14px] w-auto select-none"
+                />
               </LocalizedClientLink>
             </div>
 
@@ -129,6 +137,9 @@ export default async function Nav() {
 
         </nav>
       </header>
+
+      {/* Promotional Red Banner - dynamically shows sale % based on current category */}
+      <PromoBanner categories={categories} />
     </div>
   )
 }
