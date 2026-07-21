@@ -71,7 +71,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   }
 
   return (
-    <div className="flex items-center gap-x-[24px] h-full relative">
+    <div className="flex items-center gap-x-[28px] h-full relative">
       {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
         return (
@@ -84,13 +84,13 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
             <LocalizedClientLink
               href={href}
               className={clx(
-                "relative flex items-center h-full text-[13px] font-medium uppercase tracking-[0.05em] transition-colors duration-200 focus:outline-none",
+                "relative h-full flex items-center text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
                 active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
               )}
             >
               {label}
               {active && (
-                <span className="absolute bottom-[0px] left-0 right-0 h-[1.5px] bg-[#111111]" />
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#111111]" />
               )}
             </LocalizedClientLink>
           </div>
