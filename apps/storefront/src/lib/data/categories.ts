@@ -27,7 +27,7 @@ export const listCategories = async (query?: Record<string, unknown>) => {
         next,
       }
     )
-    .then(({ product_categories }) => product_categories)
+    .then(({ product_categories }: any) => product_categories)
 }
 
 export const getCategoryByHandle = async (categoryHandle: string[]) => {
@@ -38,7 +38,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(
+    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
       `/store/product-categories`,
       {
         query: {
@@ -50,5 +50,5 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
         cache: "no-store",
       }
     )
-    .then(({ product_categories }) => product_categories[0])
+    .then(({ product_categories }: any) => product_categories[0])
 }

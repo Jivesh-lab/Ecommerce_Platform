@@ -3,7 +3,7 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import {
   createInventoryItemsWorkflow,
   createInventoryLevelsWorkflow,
-} from "@medusajs/medusa/core-flows"
+} from "@medusajs/core-flows"
 
 const STOCKED_QUANTITY = 100
 

@@ -151,6 +151,9 @@ export default function ProductActions({
         quantity: 1,
         countryCode,
       })
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cart-updated"))
+      }
     } catch (error: any) {
       setAddError(error?.message ?? "Could not add to bag. Please try again.")
     } finally {

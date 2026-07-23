@@ -78,7 +78,7 @@ export const listProducts = async ({
         cache: "no-store",
       }
     )
-    .then(({ products, count }) => {
+    .then(({ products, count }: any) => {
       const nextPage = count > offset + limit ? pageParam + 1 : null
 
       return {

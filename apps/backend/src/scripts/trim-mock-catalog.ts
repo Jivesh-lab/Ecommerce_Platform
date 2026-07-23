@@ -1,6 +1,6 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
-import { deleteProductsWorkflow } from "@medusajs/medusa/core-flows"
+import { deleteProductsWorkflow } from "@medusajs/core-flows"
 
 /**
  * Cuts the generated mock catalog down to KEEP_PER_CATEGORY products per leaf

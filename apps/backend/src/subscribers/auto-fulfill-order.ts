@@ -1,6 +1,8 @@
+
+
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { createOrderFulfillmentWorkflow } from "@medusajs/medusa/core-flows"
+import { createOrderFulfillmentWorkflow } from "@medusajs/core-flows"
 
 /**
  * Auto-create a fulfillment as soon as an order is placed.
@@ -97,8 +99,7 @@ export default async function autoFulfillOrderHandler({
     // reason is written onto the order itself where the admin can see it --
     // logs are not something anyone reads before shipping day.
     logger.error(
-      `auto-fulfill: NOT SHIPPED — order ${
-        order.display_id ?? orderId
+      `auto-fulfill: NOT SHIPPED — order ${order.display_id ?? orderId
       } was paid but no fulfillment could be created: ${reason}`
     )
 
@@ -135,8 +136,7 @@ async function recordFulfillmentError(
     })
   } catch (err: any) {
     logger.warn(
-      `auto-fulfill: could not record fulfillment status on order ${orderId}: ${
-        err?.message ?? err
+      `auto-fulfill: could not record fulfillment status on order ${orderId}: ${err?.message ?? err
       }`
     )
   }

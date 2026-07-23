@@ -1,6 +1,6 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { updateProductCategoriesWorkflow } from "@medusajs/medusa/core-flows"
+import { updateProductCategoriesWorkflow } from "@medusajs/core-flows"
 
 /**
  * End-to-end check of category sale pricing.

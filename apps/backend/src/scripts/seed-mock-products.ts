@@ -1,6 +1,6 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { ContainerRegistrationKeys, ProductStatus } from "@medusajs/framework/utils"
-import { createProductsWorkflow, createInventoryLevelsWorkflow } from "@medusajs/medusa/core-flows"
+import { createProductsWorkflow, createInventoryLevelsWorkflow } from "@medusajs/core-flows"
 
 function generateMockProducts(category: any, count: number, salesChannelId: string, shippingProfileId: string) {
   const sizes = ["S", "M", "L", "XL"]

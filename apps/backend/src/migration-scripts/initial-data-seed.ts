@@ -18,7 +18,7 @@ import {
   createTaxRegionsWorkflow,
   linkSalesChannelsToApiKeyWorkflow,
   linkSalesChannelsToStockLocationWorkflow,
-} from "@medusajs/medusa/core-flows";
+} from "@medusajs/core-flows";
 import {
   categories as brandCategories,
   products as brandProducts,

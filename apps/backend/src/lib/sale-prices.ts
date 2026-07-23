@@ -3,7 +3,7 @@ import {
   ContainerRegistrationKeys,
   Modules,
 } from "@medusajs/framework/utils"
-import { updateProductCategoriesWorkflow } from "@medusajs/medusa/core-flows"
+import { updateProductCategoriesWorkflow } from "@medusajs/core-flows"
 import { createHash } from "crypto"
 import { ulid } from "ulid"
 

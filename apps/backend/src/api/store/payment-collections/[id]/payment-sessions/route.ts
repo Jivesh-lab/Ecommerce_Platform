@@ -2,7 +2,7 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { createPaymentSessionsWorkflow } from "@medusajs/medusa/core-flows"
+import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 /**

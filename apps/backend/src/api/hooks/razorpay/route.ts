@@ -2,7 +2,7 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { completeCartWorkflow } from "@medusajs/medusa/core-flows"
+import { completeCartWorkflow } from "@medusajs/core-flows"
 import crypto from "crypto"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
