@@ -42,7 +42,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       `/store/product-categories`,
       {
         query: {
-          fields: "*category_children",
+          fields: "*category_children, *parent_category, *parent_category.category_children",
           include_descendants_tree: true,
           handle,
         },

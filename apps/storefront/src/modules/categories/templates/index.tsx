@@ -83,21 +83,7 @@ export default async function CategoryTemplate({
     </Suspense>
   )
 
-  // Unified Architecture for Landing Pages
-  if (EDITORIAL_CATEGORIES.includes(category.handle)) {
-    const cmsSections = await getLandingSections(category.handle)
-    return (
-      <div className="relative w-full flex flex-col bg-neutral-900">
-        <LandingRenderer 
-          sections={cmsSections || []} 
-          pageName={category.handle} 
-          preFooter={<SubcategorySlider category={category} />}
-        />
-      </div>
-    )
-  }
-
-  // Fallback to normal Product Listing Page (PLP) for subcategories
+  // Render unified Product Listing Page (Page 2 Layout) for all category pages
   return (
     <CategoryProductListing category={category} parents={parents}>
       {productGrid}

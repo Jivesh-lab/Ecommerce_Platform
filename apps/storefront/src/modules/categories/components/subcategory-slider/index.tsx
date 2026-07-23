@@ -53,7 +53,7 @@ export default function SubcategorySlider({
           `}} />
           <ul 
             ref={scrollRef}
-            className="flex items-center gap-x-8 overflow-x-auto hide-scroll scroll-smooth whitespace-nowrap pb-1"
+            className="flex items-center gap-x-8 overflow-x-auto hide-scroll scrollbar-none scroll-smooth whitespace-nowrap pb-1"
           >
             <li>
               <LocalizedClientLink
