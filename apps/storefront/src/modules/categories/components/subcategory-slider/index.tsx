@@ -36,7 +36,7 @@ export default function SubcategorySlider({
 
   return (
     <div className="w-full bg-white py-4 border-t border-b border-neutral-200 relative group">
-      <div className="content-container flex items-center w-full">
+      <div className="max-w-[1550px] mx-auto px-8 sm:px-12 flex items-center w-full">
         <div className="font-bold text-xs mr-8 shrink-0 uppercase tracking-widest text-neutral-900">
           {category.name}
         </div>
