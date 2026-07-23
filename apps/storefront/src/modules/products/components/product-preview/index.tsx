@@ -75,8 +75,8 @@ export default function ProductPreview({
         data-testid="product-wrapper" 
         className="flex flex-col w-full h-full relative bg-white"
       >
-        {/* Mango-style Image Container */}
-        <div className="relative w-full aspect-[3/4] overflow-hidden">
+        {/* Mango-style Image Container (Exact 2048x2867 Ratio) */}
+        <div className="relative w-full aspect-[2048/2867] overflow-hidden bg-[#F3F3F3]">
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}

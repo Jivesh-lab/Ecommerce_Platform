@@ -47,21 +47,19 @@ export default function WishlistClient({
   return (
     <div className="w-full flex flex-col font-sans text-[#111111] pb-24">
       {/* Top Header Section */}
-      <div className="w-full px-6 sm:px-8 xl:px-10 pt-8 pb-6 border-b border-neutral-100 flex justify-between items-baseline">
-        <h1 className="text-[14px] font-bold uppercase tracking-[0.05em]">
-          MY WISHLIST ({wishlistItems.length})
+      <div className="w-full px-8 sm:px-12 pt-8 pb-4 flex flex-col items-start select-none">
+        <h1 className="text-base sm:text-lg font-bold uppercase tracking-wider text-neutral-900">
+          MY WISHLIST
         </h1>
-        {wishlistItems.length > 0 && (
-          <span className="text-xs text-neutral-500 tracking-wider">
-            These are the items you liked the most
-          </span>
-        )}
+        <p className="text-xs text-neutral-500 mt-1 font-normal tracking-wide">
+          These are the items you liked the most
+        </p>
       </div>
 
       {wishlistItems.length > 0 ? (
         /* Saved Wishlist Items Grid */
-        <div className="w-full px-6 sm:px-8 xl:px-10 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+        <div className="w-full px-4 sm:px-8 py-4 max-w-[1550px]">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-2">
             {wishlistItems.map((product) => (
               <ProductPreview
                 key={product.id}

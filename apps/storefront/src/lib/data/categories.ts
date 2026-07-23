@@ -47,7 +47,6 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
           handle,
         },
         next,
-        cache: "no-store",
       }
     )
     .then(({ product_categories }: any) => product_categories[0])
