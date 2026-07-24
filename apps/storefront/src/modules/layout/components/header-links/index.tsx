@@ -121,7 +121,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
             <LocalizedClientLink
               href={href}
               className={clx(
-                "relative flex items-center text-[13px] font-bold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
+                "relative flex items-center text-[13px] font-bold uppercase tracking-[0.08em] transition-colors duration-200 focus:outline-none",
                 active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
               )}
             >

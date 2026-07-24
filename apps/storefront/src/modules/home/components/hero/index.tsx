@@ -104,15 +104,15 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
         }
         .animate-hero-bg {
           opacity: 0;
-          animation: fadeInScale 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          animation: fadeInScale 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
         .animate-hero-item {
           opacity: 0;
-          animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          animation: fadeSlideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-        .delay-1 { animation-delay: 200ms; }
-        .delay-2 { animation-delay: 400ms; }
-        .delay-3 { animation-delay: 600ms; }
+        .delay-1 { animation-delay: 400ms; }
+        .delay-2 { animation-delay: 800ms; }
+        .delay-3 { animation-delay: 1200ms; }
       `}} />
       {activeItems.map((campaign, index) => (
         <section

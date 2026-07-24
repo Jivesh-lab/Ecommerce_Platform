@@ -37,7 +37,7 @@ export default function Footer() {
           <button
             id="newsletter-form-submit-button"
             type="submit"
-            className="h-[48px] min-w-[150px] border border-[#111111] bg-white px-6 text-[13px] font-bold tracking-wide text-[#111111] transition-colors hover:bg-gray-50 flex items-center justify-center"
+            className="h-[48px] min-w-[150px] border border-[#111111] bg-[#111111] px-6 text-[13px] font-bold tracking-wide text-white transition-colors hover:bg-neutral-800 flex items-center justify-center"
           >
             SIGN UP NOW
           </button>

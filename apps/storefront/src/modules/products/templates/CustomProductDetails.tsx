@@ -233,13 +233,13 @@ export default function CustomProductDetails({
         }
         .animate-fade-slide {
           opacity: 0;
-          animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          animation: fadeSlideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-        .delay-1 { animation-delay: 100ms; }
-        .delay-2 { animation-delay: 200ms; }
-        .delay-3 { animation-delay: 300ms; }
-        .delay-4 { animation-delay: 400ms; }
-        .delay-5 { animation-delay: 500ms; }
+        .delay-1 { animation-delay: 200ms; }
+        .delay-2 { animation-delay: 400ms; }
+        .delay-3 { animation-delay: 600ms; }
+        .delay-4 { animation-delay: 800ms; }
+        .delay-5 { animation-delay: 1000ms; }
       `}} />
       <div className="max-w-[1550px] mx-auto px-8 sm:px-12 py-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
 

@@ -54,7 +54,7 @@ export default async function Nav() {
             </div>
 
             {/* Right Section: Actions */}
-            <div className="flex justify-end items-center gap-x-[32px] text-[13px] font-bold text-[#111111] tracking-wider uppercase h-full">
+            <div className="flex justify-end items-center gap-x-[32px] text-[13px] font-bold text-[#111111] tracking-[0.08em] uppercase h-full">
               <LocalizedClientLink
                 href="/search"
                 className="hover:text-[#555555] transition-colors duration-200"
