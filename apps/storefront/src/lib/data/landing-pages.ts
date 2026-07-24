@@ -40,7 +40,6 @@ export const getLandingSections = async (page: string) => {
     .fetch<{ sections: LandingSection[] }>(`/store/content/landing-pages`, {
       query: { page },
       next,
-      cache: "no-store",
     })
     .then(({ sections }: any) => sections)
     .catch(() => [] as LandingSection[])

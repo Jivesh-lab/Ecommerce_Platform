@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react"
 import Image from "next/image"
-import { Heart } from "@medusajs/icons"
+import { Heart, Spinner } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { addToCart } from "@lib/data/cart"
 import { isEqual } from "lodash"
@@ -227,7 +227,7 @@ export default function CustomProductDetails({
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-24">
       <div className="max-w-[1550px] mx-auto px-8 sm:px-12 py-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
-        
+
         {/* Left Section: Vertically Stacked Product Images */}
         <div className="lg:col-span-7 flex flex-col gap-y-6">
           {productImages.map((img, index) => (
@@ -254,7 +254,7 @@ export default function CustomProductDetails({
         {/* Right Section: Sticky Info and Purchase Actions */}
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-[110px] flex flex-col items-start select-none">
-            
+
             {/* Collection Badge */}
             <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-900 mb-1">
               {product.collection?.title || "NEW NOW"}
@@ -288,9 +288,8 @@ export default function CustomProductDetails({
                             <button
                               key={val}
                               onClick={() => setOptionValue(option.id, val)}
-                              className={`w-3 h-4 rounded-[1px] border focus:outline-none transition-all duration-200 ${
-                                isSelected ? "border-black scale-110" : "border-neutral-200"
-                              }`}
+                              className={`w-3 h-4 rounded-[1px] border focus:outline-none transition-all duration-200 ${isSelected ? "border-black scale-110" : "border-neutral-200"
+                                }`}
                               style={{ backgroundColor: hex }}
                               title={val}
                             />
@@ -315,11 +314,10 @@ export default function CustomProductDetails({
                           <button
                             key={val}
                             onClick={() => setOptionValue(option.id, val)}
-                            className={`flex justify-between items-center py-3 border-b border-transparent focus:outline-none transition-colors ${
-                              isSelected
+                            className={`flex justify-between items-center py-3 border-b border-transparent focus:outline-none transition-colors ${isSelected
                                 ? "text-black font-bold"
                                 : "text-neutral-500 hover:text-black"
-                            }`}
+                              }`}
                           >
                             <span className="uppercase tracking-widest">{val}</span>
                           </button>
@@ -343,11 +341,10 @@ export default function CustomProductDetails({
                         <button
                           key={val}
                           onClick={() => setOptionValue(option.id, val)}
-                          className={`px-4 py-2 border text-xs font-semibold rounded-sm transition-all focus:outline-none ${
-                            isSelected
+                          className={`px-4 py-2 border text-xs font-semibold rounded-sm transition-all focus:outline-none ${isSelected
                               ? "border-black bg-black text-white"
                               : "border-neutral-200 hover:border-neutral-400 text-neutral-800"
-                          }`}
+                            }`}
                         >
                           {val}
                         </button>
@@ -371,12 +368,16 @@ export default function CustomProductDetails({
                 {isAddedSuccess
                   ? "ADDED TO BAG ✓"
                   : isAdding
-                  ? "ADDING TO BAG..."
-                  : !selectedVariant && (product.variants?.length ?? 0) > 1
-                  ? "SELECT OPTIONS"
-                  : !inStock
-                  ? "OUT OF STOCK"
-                  : "ADD TO BAG"}
+                    ? (
+                      <span className="flex items-center justify-center gap-x-2">
+                        <Spinner className="animate-spin w-4 h-4" /> ADDING TO BAG...
+                      </span>
+                    )
+                    : !selectedVariant && (product.variants?.length ?? 0) > 1
+                      ? "SELECT OPTIONS"
+                      : !inStock
+                        ? "OUT OF STOCK"
+                        : "ADD TO BAG"}
               </button>
               <WishlistButton
                 product={product}

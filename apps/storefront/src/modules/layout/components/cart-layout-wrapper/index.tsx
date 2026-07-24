@@ -1,30 +1,29 @@
-import { Metadata } from "next"
-import { getBaseURL } from "@lib/util/env"
-import Footer from "@modules/layout/templates/footer"
-import Nav from "@modules/layout/templates/nav"
+import { listCartOptions, retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
-import { retrieveCart, listCartOptions } from "@lib/data/cart"
 import { StoreCartShippingOption } from "@medusajs/types"
 import CartMismatchBanner from "@modules/layout/components/cart-mismatch-banner"
 import FreeShippingPriceNudge from "@modules/shipping/components/free-shipping-price-nudge"
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getBaseURL()),
-}
-
-export default async function PageLayout(props: { children: React.ReactNode }) {
+export default async function CartLayoutWrapper() {
+  console.time("CartLayoutWrapper: retrieveCustomer")
   const customer = await retrieveCustomer()
+  console.timeEnd("CartLayoutWrapper: retrieveCustomer")
+
+  console.time("CartLayoutWrapper: retrieveCart")
   const cart = await retrieveCart()
+  console.timeEnd("CartLayoutWrapper: retrieveCart")
+  
   let shippingOptions: StoreCartShippingOption[] = []
 
   if (cart) {
+    console.time("CartLayoutWrapper: listCartOptions")
     const { shipping_options } = await listCartOptions()
     shippingOptions = shipping_options
+    console.timeEnd("CartLayoutWrapper: listCartOptions")
   }
 
   return (
     <>
-      <Nav />
       {customer && cart && (
         <CartMismatchBanner customer={customer} cart={cart} />
       )}
@@ -35,8 +34,6 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
           shippingOptions={shippingOptions}
         />
       )}
-      {props.children}
-      <Footer />
     </>
   )
 }

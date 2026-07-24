@@ -45,10 +45,7 @@ export default async function CategoryTemplate({
   }
   getParents(category)
 
-  // Collect category IDs from this category, its descendants, and matching equivalent categories by name
-  const allCategories = await listCategories({ limit: 500 }).catch(() => [])
-
-  const targetName = category.name?.toLowerCase().trim()
+  // Collect category IDs from this category and its descendants
   const allCategoryIds: string[] = []
 
   const collectIds = (cat: HttpTypes.StoreProductCategory) => {
@@ -60,16 +57,6 @@ export default async function CategoryTemplate({
     }
   }
   collectIds(category)
-
-  // Fallback: match any categories in the store with identical category names (e.g. Sale vs Clothing categories)
-  if (targetName && allCategories.length > 0) {
-    allCategories.forEach((cat: any) => {
-      const catName = cat.name?.toLowerCase().trim()
-      if (catName === targetName) {
-        collectIds(cat)
-      }
-    })
-  }
 
   const productGrid = (
     <Suspense fallback={<SkeletonProductGrid numberOfProducts={category.products?.length ?? 8} />}>
@@ -85,7 +72,7 @@ export default async function CategoryTemplate({
 
   // Render unified Product Listing Page (Page 2 Layout) for all category pages
   return (
-    <CategoryProductListing category={category} parents={parents} allCategories={allCategories}>
+    <CategoryProductListing category={category} parents={parents} allCategories={[]}>
       {productGrid}
     </CategoryProductListing>
   )

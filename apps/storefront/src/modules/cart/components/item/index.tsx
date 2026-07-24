@@ -12,7 +12,7 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 type ItemProps = {
   item: HttpTypes.StoreCartLineItem
@@ -26,30 +26,51 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { optimisticDeletedItemIds } = useCartUIStore()
+  
+  // Optimistic quantity state
+  const [localQuantity, setLocalQuantity] = useState(item.quantity)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Sync with server state when not updating
+  useEffect(() => {
+    if (!updating) {
+      setLocalQuantity(item.quantity)
+    }
+  }, [item.quantity, updating])
 
   if (optimisticDeletedItemIds.includes(item.id)) {
     return null
   }
 
-  const changeQuantity = async (quantity: number) => {
+  const changeQuantity = (newQuantity: number) => {
     setError(null)
+    setLocalQuantity(newQuantity) // Instant UI update
+    
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
     setUpdating(true)
 
-    await updateLineItem({
-      lineId: item.id,
-      quantity,
-    })
-      .then(() => {
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("cart-updated"))
-        }
+    // Debounce server call to allow rapid clicking
+    timeoutRef.current = setTimeout(async () => {
+      await updateLineItem({
+        lineId: item.id,
+        quantity: newQuantity,
       })
-      .catch((err) => {
-        setError(err.message)
-      })
-      .finally(() => {
-        setUpdating(false)
-      })
+        .then(() => {
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("cart-updated"))
+          }
+        })
+        .catch((err) => {
+          setError(err.message)
+          setLocalQuantity(item.quantity) // Revert on error
+        })
+        .finally(() => {
+          setUpdating(false)
+        })
+    }, 400)
   }
 
   // Update this to grab the actual max inventory from the variant
@@ -118,8 +139,8 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
             <div className="flex items-center gap-x-2 border border-neutral-200 p-1">
               <button
                 className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
-                onClick={() => changeQuantity(item.quantity - 1)}
-                disabled={item.quantity <= 1 || updating}
+                onClick={() => changeQuantity(localQuantity - 1)}
+                disabled={localQuantity <= 1}
                 data-testid="decrease-quantity-button"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
@@ -127,12 +148,12 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
                 </svg>
               </button>
               <span className="w-6 text-center text-xs font-semibold text-neutral-900" data-testid="product-quantity">
-                {item.quantity}
+                {localQuantity}
               </span>
               <button
                 className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
-                onClick={() => changeQuantity(item.quantity + 1)}
-                disabled={item.quantity >= maxQuantity || updating}
+                onClick={() => changeQuantity(localQuantity + 1)}
+                disabled={localQuantity >= maxQuantity}
                 data-testid="increase-quantity-button"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">

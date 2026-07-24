@@ -67,7 +67,10 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
 
   // Handle cursor leaving the mega menu dropdown
   const handleMenuMouseLeave = () => {
-    setActiveCategory(null)
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      setActiveCategory(null)
+    }, 150)
   }
 
   return (

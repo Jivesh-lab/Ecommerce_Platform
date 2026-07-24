@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { Spinner } from "@medusajs/icons"
 import {
   ButtonHTMLAttributes,
   forwardRef,
@@ -94,7 +95,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        {isLoading ? "Loading..." : children}
+        {isLoading ? (
+          <span className="flex items-center gap-x-2">
+            <Spinner className="animate-spin w-4 h-4" />
+            Loading...
+          </span>
+        ) : (
+          children
+        )}
       </button>
     )
   }

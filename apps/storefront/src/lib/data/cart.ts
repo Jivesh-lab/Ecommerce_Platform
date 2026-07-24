@@ -472,38 +472,53 @@ export async function checkCartInventory(cartId?: string) {
 
   const cart = cartResp.cart
 
-  for (const item of cart.items || []) {
-    if (item.variant?.manage_inventory) {
-      let available = item.variant.inventory_quantity
+  const checkPromises = (cart.items || []).map(async (item: any) => {
+    if (!item.variant?.manage_inventory) {
+      return { inStock: true, item }
+    }
 
-      // Fallback: If the API stripped the field from the cart response, fetch the product directly
-      if (available === undefined && item.variant.product_id) {
-        const prodResp = await sdk.client
-          .fetch<any>(`/store/products`, {
-            method: "GET",
-            query: {
-              id: item.variant.product_id,
-              fields: "*variants,*variants.inventory_quantity",
-            },
-            headers,
-            cache: "no-store",
-          })
-          .catch(() => null)
+    let available = item.variant.inventory_quantity
 
-        const variant = prodResp?.products?.[0]?.variants?.find(
-          (v: any) => v.id === item.variant?.id
-        )
-        available = variant?.inventory_quantity
+    // Fallback: If the API stripped the field from the cart response, fetch the product directly
+    if (available === undefined && item.variant.product_id) {
+      const prodResp = await sdk.client
+        .fetch<any>(`/store/products`, {
+          method: "GET",
+          query: {
+            id: item.variant.product_id,
+            fields: "*variants,*variants.inventory_quantity",
+          },
+          headers,
+          cache: "no-store",
+        })
+        .catch(() => null)
+
+      const variant = prodResp?.products?.[0]?.variants?.find(
+        (v: any) => v.id === item.variant?.id
+      )
+      available = variant?.inventory_quantity
+    }
+
+    const stock = available ?? 0
+
+    if (item.quantity > stock) {
+      return {
+        inStock: false,
+        message: `Sorry, "${item.product_title}" only has ${stock} left in stock. Please adjust your cart.`,
+        item,
       }
+    }
 
-      const stock = available ?? 0
+    return { inStock: true, item }
+  })
 
-      if (item.quantity > stock) {
-        return {
-          inStock: false,
-          message: `Sorry, "${item.product_title}" only has ${stock} left in stock. Please adjust your cart.`,
-        }
-      }
+  const results = await Promise.all(checkPromises)
+  const outOfStockItem = results.find((r: any) => !r.inStock)
+
+  if (outOfStockItem) {
+    return {
+      inStock: false,
+      message: outOfStockItem.message,
     }
   }
 

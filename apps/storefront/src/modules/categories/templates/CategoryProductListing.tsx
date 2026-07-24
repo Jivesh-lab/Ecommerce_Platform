@@ -23,13 +23,15 @@ export default function CategoryProductListing({
   const [cols, setCols] = useState<1 | 2 | 4>(4)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
-  // Bypass stale cache by finding the category inside allCategories to get reliable parent_category_id
-  const categoryInAll = allCategories.find((c: any) => c.id === category.id)
-  const parentId = categoryInAll?.parent_category_id || category?.parent_category?.id || parents?.[0]?.id
-  const exactSiblings = parentId ? allCategories.filter((c: any) => c.parent_category_id === parentId) : []
+  // Determine siblings or children for the submenu
+  const parentId = category?.parent_category?.id || parents?.[0]?.id
+  const exactSiblings = allCategories.length > 0
+    ? allCategories.filter((c: any) => c.parent_category_id === parentId)
+    : category?.parent_category?.category_children || []
+  
   const subcategoriesToPass = category.category_children?.length ? category.category_children : exactSiblings
 
-  console.log("DEBUG: parentId", parentId, "allCategories length", allCategories.length, "exactSiblings length", exactSiblings.length)
+  console.log("DEBUG: parentId", parentId, "exactSiblings length", exactSiblings.length)
 
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-16">

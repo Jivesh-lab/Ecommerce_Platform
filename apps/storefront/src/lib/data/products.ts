@@ -96,7 +96,7 @@ export const listProducts = async ({
  * It will then return the paginated products based on the page and limit parameters.
  */
 export const listProductsWithSort = async ({
-  page = 0,
+  page = 1,
   queryParams,
   sortBy = "created_at",
   countryCode,
@@ -117,32 +117,25 @@ export const listProductsWithSort = async ({
     new Set((optionValueIds || []).filter(Boolean))
   )
 
-  const {
-    response: { products },
-  } = await listProducts({
-    pageParam: 0,
+  const { response, nextPage } = await listProducts({
+    pageParam: page,
     queryParams: {
       ...queryParams,
       ...(optionFilters.length ? { option_value_id: optionFilters } : {}),
-      limit: 24,
+      limit,
+      order: sortBy === "created_at" ? "-created_at" : undefined,
     },
     countryCode,
   })
 
-  const sortedProducts = sortProducts(products, sortBy)
-
-  const pageParam = (page - 1) * limit
-
-  const filteredCount = products.length
-
-  const nextPage = filteredCount > pageParam + limit ? pageParam + limit : null
-
-  const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
+  // Apply fallback JS sorting for price since the API might not fully support price sorting natively yet.
+  // This will sort the items on the current page correctly.
+  const sortedProducts = sortProducts(response.products, sortBy)
 
   return {
     response: {
-      products: paginatedProducts,
-      count: filteredCount,
+      products: sortedProducts,
+      count: response.count,
     },
     nextPage,
     queryParams,
