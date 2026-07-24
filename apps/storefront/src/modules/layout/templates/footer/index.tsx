@@ -10,19 +10,16 @@ export default function Footer() {
   return (
     <footer className="w-full border-t border-neutral-100 bg-white font-sans tracking-wide text-neutral-800">
       <div className="flex w-full flex-col items-center justify-center bg-white px-4 pb-16 pt-24 text-center">
-        <h2 className="text-[13px] font-bold text-[#111111] mb-6">
+        <h2 className="text-[16px] md:text-[18px] font-bold tracking-wide text-[#111111] mb-2">
           10% off your next purchase by subscribing to the newsletter
         </h2>
 
         <form
           onSubmit={(event) => event.preventDefault()}
-          className="flex w-full max-w-[500px] flex-row items-stretch"
+          className="flex w-full max-w-[600px] flex-row items-stretch gap-x-2 mt-4"
         >
-          <div className="flex flex-1 flex-col border border-gray-300 bg-white text-left px-3 pt-2 relative">
-            <label
-              htmlFor="newsletter-form-email-input"
-              className="text-[11px] font-normal text-gray-500 absolute top-2 left-3"
-            >
+          <div className="flex flex-1 relative">
+            <label htmlFor="newsletter-form-email-input" className="sr-only">
               E-mail
             </label>
             <input
@@ -31,22 +28,22 @@ export default function Footer() {
               type="email"
               autoComplete="email"
               aria-required="true"
-              placeholder=""
+              placeholder="E-mail"
               required
-              className="h-[46px] w-full bg-transparent pt-3 text-[13px] font-normal text-[#111111] focus:outline-none"
+              className="h-[48px] w-full border border-gray-400 bg-white px-4 text-[14px] font-normal text-[#111111] placeholder:text-black focus:outline-none focus:border-[#111111] transition-colors"
             />
           </div>
 
           <button
             id="newsletter-form-submit-button"
             type="submit"
-            className="h-[48px] ml-[-1px] min-w-[130px] border border-[#111111] bg-white px-6 text-[12px] font-bold text-[#111111] transition-colors hover:bg-gray-50"
+            className="h-[48px] min-w-[150px] border border-[#111111] bg-white px-6 text-[13px] font-bold tracking-wide text-[#111111] transition-colors hover:bg-gray-50 flex items-center justify-center"
           >
             SIGN UP NOW
           </button>
         </form>
 
-        <p className="mt-4 text-[11px] font-normal text-[#111111]">
+        <p className="mt-6 text-[13px] md:text-[14px] font-normal text-[#111111]">
           By subscribing, you confirm that you have read the{" "}
           <LocalizedClientLink
             href="/privacy-policy"

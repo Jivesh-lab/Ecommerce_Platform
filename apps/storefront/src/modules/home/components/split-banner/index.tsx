@@ -37,12 +37,12 @@ export const SplitBanner: React.FC<SplitBannerProps> = ({ items, fallbackItems =
         />
 
         <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 z-20 text-white select-none flex justify-between items-center">
-          <h2 className="text-sm md:text-base font-bold uppercase tracking-widest leading-none">
+          <h2 className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] leading-none">
             {leftTitle}
           </h2>
           <LocalizedClientLink
             href={leftLink}
-            className="text-white text-sm md:text-base font-bold uppercase tracking-widest hover:text-neutral-300 transition-colors duration-300 leading-none"
+            className="text-white text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-neutral-300 transition-colors duration-300 leading-none"
           >
             {leftButtonText}
           </LocalizedClientLink>
@@ -58,12 +58,12 @@ export const SplitBanner: React.FC<SplitBannerProps> = ({ items, fallbackItems =
         />
 
         <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 z-20 text-white select-none flex justify-between items-center">
-          <h2 className="text-sm md:text-base font-bold uppercase tracking-widest leading-none">
+          <h2 className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] leading-none">
             {rightTitle}
           </h2>
           <LocalizedClientLink
             href={rightLink}
-            className="text-white text-sm md:text-base font-bold uppercase tracking-widest hover:text-neutral-300 transition-colors duration-300 leading-none"
+            className="text-white text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-neutral-300 transition-colors duration-300 leading-none"
           >
             {rightButtonText}
           </LocalizedClientLink>

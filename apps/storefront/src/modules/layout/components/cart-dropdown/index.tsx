@@ -106,7 +106,7 @@ const CartDropdown = ({
   return (
     <div className="h-full flex items-center z-50">
       <LocalizedClientLink
-        className="text-[14px] font-semibold uppercase tracking-wider text-[#111111] hover:text-[#555555] transition-colors duration-200"
+        className="text-[13px] font-bold uppercase tracking-wider text-[#111111] hover:text-[#555555] transition-colors duration-200"
         href="/cart"
         data-testid="nav-cart-link"
       >

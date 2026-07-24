@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { clx } from "@modules/common/components/ui"
@@ -19,6 +19,10 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   const pathname = usePathname()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  
+  const containerRef = useRef<HTMLDivElement>(null)
+  const navRefs = useRef<Record<string, HTMLSpanElement | null>>({})
+  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0, top: 0, opacity: 0 })
 
   const isActive = (href: string) => {
     if (!pathname) return false
@@ -34,6 +38,36 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
     }
     return cleanPath.startsWith(href)
   }
+
+  // Update underline position
+  useEffect(() => {
+    const updateUnderline = () => {
+      const currentActiveKey = NAV_LINKS.find(link => isActive(link.href))?.key || null
+      const targetKey = activeCategory || currentActiveKey
+
+      if (targetKey && navRefs.current[targetKey] && containerRef.current) {
+        const containerRect = containerRef.current.getBoundingClientRect()
+        const elRect = navRefs.current[targetKey]!.getBoundingClientRect()
+        
+        setUnderlineStyle({
+          left: elRect.left - containerRect.left,
+          width: elRect.width,
+          top: elRect.bottom - containerRect.top + 2,
+          opacity: 1
+        })
+      } else {
+        setUnderlineStyle(prev => ({ ...prev, opacity: 0 }))
+      }
+    }
+
+    // Small delay ensures layout is complete before measuring
+    const timeout = setTimeout(updateUnderline, 50)
+    window.addEventListener("resize", updateUnderline)
+    return () => {
+      clearTimeout(timeout)
+      window.removeEventListener("resize", updateUnderline)
+    }
+  }, [activeCategory, pathname])
 
   // Handle cursor entering a link trigger
   const handleMouseEnter = (key: string) => {
@@ -74,7 +108,7 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
   }
 
   return (
-    <div className="flex items-center gap-x-[28px] h-full relative">
+    <div className="flex items-center gap-x-[28px] h-full relative" ref={containerRef}>
       {NAV_LINKS.map(({ label, href, key }) => {
         const active = isActive(href)
         return (
@@ -87,18 +121,28 @@ export const HeaderLinks: React.FC<{ categories?: HttpTypes.StoreProductCategory
             <LocalizedClientLink
               href={href}
               className={clx(
-                "relative h-full flex items-center text-[14px] font-semibold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
+                "relative flex items-center text-[13px] font-bold uppercase tracking-wider transition-colors duration-200 focus:outline-none",
                 active ? "text-[#111111]" : "text-[#111111] hover:text-[#555555]"
               )}
             >
-              {label}
-              {active && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#111111]" />
-              )}
+              <span ref={(el) => { navRefs.current[key] = el }}>
+                {label}
+              </span>
             </LocalizedClientLink>
           </div>
         )
       })}
+
+      {/* Sliding Underline */}
+      <span
+        className="absolute h-[1.5px] bg-[#111111] transition-all duration-300 ease-out z-10 pointer-events-none"
+        style={{
+          left: `${underlineStyle.left}px`,
+          top: `${underlineStyle.top}px`,
+          width: `${underlineStyle.width}px`,
+          opacity: underlineStyle.opacity,
+        }}
+      />
 
       {/* Render the Dropdown Panel below Navbar */}
       <MegaMenu

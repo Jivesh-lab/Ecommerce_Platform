@@ -51,18 +51,25 @@ const fallbackCampaigns: Record<string, any[]> = {
   kids: [
     {
       id: "kids-play",
-      title: "Playtime Ready",
-      button_text: "Shop Kids",
-      button_link: "/categories/kids",
+      title: "New Now",
+      sub_buttons: [
+        { text: "Girls", link: "/categories/kids/girls" },
+        { text: "Boys", link: "/categories/kids/boys" },
+        { text: "Baby Girls", link: "/categories/kids/baby-girls" },
+        { text: "Baby Boys", link: "/categories/kids/baby-boys" },
+        { text: "Newborn", link: "/categories/kids/newborn" },
+      ],
       desktop_image: "/images/campaign-4.jpg",
     },
   ],
   teen: [
     {
       id: "teen-style",
-      title: "Teen Style",
-      button_text: "Shop Teen",
-      button_link: "/categories/teen",
+      title: "New Now",
+      sub_buttons: [
+        { text: "Teen Girl", link: "/categories/teen/teen-girl" },
+        { text: "Teen Boy", link: "/categories/teen/teen-boy" },
+      ],
       desktop_image: "/images/campaign-5.jpg",
     },
   ]
@@ -70,7 +77,7 @@ const fallbackCampaigns: Record<string, any[]> = {
 
 const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
   const fallback = fallbackCampaigns[pageName] || fallbackCampaigns["home"]
-  
+
   // Merge CMS items with fallback items to guarantee no broken fields
   const activeItems = (items && items.length > 0 ? items : fallback).map((cmsItem, index) => {
     const fallbackItem = fallback[index] || fallback[0]
@@ -79,12 +86,34 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
       title: cmsItem.title || fallbackItem.title,
       button_text: cmsItem.button_text || fallbackItem.button_text,
       button_link: cmsItem.button_link || fallbackItem.button_link,
+      sub_buttons: cmsItem.metadata?.sub_buttons || cmsItem.sub_buttons || fallbackItem.sub_buttons,
       desktop_image: cmsItem.desktop_image || cmsItem.mobile_image || fallbackItem.desktop_image,
     }
   })
 
   return (
     <div className="relative w-full flex flex-col bg-neutral-900">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes fadeSlideUp {
+          0% { opacity: 0; transform: translateY(15px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+          0% { opacity: 0; transform: scale(1.05); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-hero-bg {
+          opacity: 0;
+          animation: fadeInScale 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        .animate-hero-item {
+          opacity: 0;
+          animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        .delay-1 { animation-delay: 200ms; }
+        .delay-2 { animation-delay: 400ms; }
+        .delay-3 { animation-delay: 600ms; }
+      `}} />
       {activeItems.map((campaign, index) => (
         <section
           key={campaign.id}
@@ -93,7 +122,7 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
           aria-label={`Editorial Campaign: ${campaign.title}`}
         >
           {/* Full Screen Background Image */}
-          <div className="absolute inset-0 w-full h-full z-0 flex [&>picture]:w-full [&>picture]:h-full">
+          <div className="absolute inset-0 w-full h-full z-0 flex [&>picture]:w-full [&>picture]:h-full animate-hero-bg">
             <CloudinaryImage
               src={campaign.desktop_image}
               alt={campaign.title || "Hero Campaign"}
@@ -101,22 +130,39 @@ const Hero: React.FC<HeroProps> = ({ items, pageName = "home" }) => {
               className="object-cover object-center w-full h-full"
             />
             {/* Subtle overlay for typography readability */}
-
+            <div className="absolute inset-0 bg-black/10 z-10 pointer-events-none" />
           </div>
 
           {/* Centered Typography & Minimalist CTA */}
           <div className="relative z-20 max-w-4xl mx-auto px-4 flex flex-col items-center select-none">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight uppercase text-white mb-8 leading-none">
+            <h1 className="text-5xl md:text-[80px] font-bold tracking-tight uppercase mb-6 leading-none text-white animate-hero-item delay-1" style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}>
               {campaign.title}
             </h1>
-            <div>
-              <LocalizedClientLink
-                href={campaign.button_link || "/store"}
-                className="text-white text-xs font-semibold uppercase tracking-[0.2em] hover:text-neutral-300 transition-colors duration-300"
-              >
-                {campaign.button_text || "Discover More"}
-              </LocalizedClientLink>
-            </div>
+            
+            {campaign.sub_buttons && campaign.sub_buttons.length > 0 ? (
+              <div className="flex flex-wrap justify-center gap-4 md:gap-8 animate-hero-item delay-2">
+                {campaign.sub_buttons.map((btn: any, i: number) => (
+                  <LocalizedClientLink
+                    key={i}
+                    href={btn.link}
+                    className="text-white text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-neutral-300 transition-colors duration-300"
+                    style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}
+                  >
+                    {btn.text}
+                  </LocalizedClientLink>
+                ))}
+              </div>
+            ) : (
+              <div className="animate-hero-item delay-2">
+                <LocalizedClientLink
+                  href={campaign.button_link || "/store"}
+                  className="text-white text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-neutral-300 transition-colors duration-300"
+                  style={{ fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif" }}
+                >
+                  {campaign.button_text || "Discover More"}
+                </LocalizedClientLink>
+              </div>
+            )}
           </div>
         </section>
       ))}

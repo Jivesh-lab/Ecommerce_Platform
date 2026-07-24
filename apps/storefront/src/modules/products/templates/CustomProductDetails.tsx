@@ -226,10 +226,25 @@ export default function CustomProductDetails({
 
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-24">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes fadeSlideUp {
+          0% { opacity: 0; transform: translateY(15px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-slide {
+          opacity: 0;
+          animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        .delay-1 { animation-delay: 100ms; }
+        .delay-2 { animation-delay: 200ms; }
+        .delay-3 { animation-delay: 300ms; }
+        .delay-4 { animation-delay: 400ms; }
+        .delay-5 { animation-delay: 500ms; }
+      `}} />
       <div className="max-w-[1550px] mx-auto px-8 sm:px-12 py-10 grid grid-cols-1 lg:grid-cols-12 gap-12">
 
         {/* Left Section: Vertically Stacked Product Images */}
-        <div className="lg:col-span-7 flex flex-col gap-y-6">
+        <div className="lg:col-span-7 flex flex-col gap-y-6 animate-fade-slide delay-1">
           {productImages.map((img, index) => (
             <div key={img.url || index} className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-50">
               {img.url ? (
@@ -256,17 +271,17 @@ export default function CustomProductDetails({
           <div className="lg:sticky lg:top-[110px] flex flex-col items-start select-none">
 
             {/* Collection Badge */}
-            <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-900 mb-1">
+            <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-900 mb-1 animate-fade-slide delay-2">
               {product.collection?.title || "NEW NOW"}
             </span>
 
             {/* Product Title */}
-            <h1 className="text-lg font-bold uppercase tracking-wide text-neutral-900 mb-1">
+            <h1 className="text-lg font-bold uppercase tracking-wide text-neutral-900 mb-1 animate-fade-slide delay-3">
               {product.title}
             </h1>
 
             {/* Product Price */}
-            <div className="text-sm font-normal text-neutral-600 mb-8">
+            <div className="text-sm font-normal text-neutral-600 mb-8 animate-fade-slide delay-3">
               <ProductPrice product={product} variant={selectedVariant} />
             </div>
 
@@ -356,7 +371,7 @@ export default function CustomProductDetails({
             })}
 
             {/* Add to Bag and Wishlist Action Buttons */}
-            <div className="flex gap-x-4 w-full mb-8">
+            <div className="flex gap-x-4 w-full mb-8 animate-fade-slide delay-5">
               <button
                 onClick={handleAddToCart}
                 disabled={
