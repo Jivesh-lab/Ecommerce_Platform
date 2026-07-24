@@ -35,13 +35,15 @@ export default function SubcategorySlider({
   collectDescendants(category)
 
   return (
-    <div className="w-full bg-white py-4 border-t border-b border-neutral-200 relative group">
-      <div className="max-w-[1550px] mx-auto px-8 sm:px-12 flex items-center w-full">
-        <div className="font-bold text-xs mr-8 shrink-0 uppercase tracking-widest text-neutral-900">
+    <div className="w-full bg-white py-8 border-t border-b border-neutral-200 relative group select-none">
+      <div className="max-w-[1550px] mx-auto px-8 sm:px-12 flex flex-col gap-y-4 w-full">
+        {/* Section Heading (MEN, WOMEN, TEEN, KIDS) */}
+        <h2 className="font-bold text-xs uppercase tracking-[0.2em] text-neutral-900">
           {category.name}
-        </div>
-        
-        <div className="flex-1 overflow-hidden relative pr-12">
+        </h2>
+
+        {/* Subcategories Horizontal Slider */}
+        <div className="w-full overflow-hidden relative pr-12">
           <style dangerouslySetInnerHTML={{__html: `
             .hide-scroll::-webkit-scrollbar {
               display: none;
