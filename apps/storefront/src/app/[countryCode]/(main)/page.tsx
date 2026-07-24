@@ -21,26 +21,8 @@ export default async function Home(props: {
 
   const { countryCode } = params
 
-  const region = await getRegion(countryCode)
-
-  const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
-
-  if (!collections || !region) {
-    return null
-  }
-
-  // Retrieve priced products from Medusa backend for featured showcase
-  const {
-    response: { products: pricedProducts },
-  } = await listProducts({
-    regionId: region.id,
-    queryParams: {
-      limit: 8,
-      fields: "*variants.calculated_price",
-    },
-  })
+  // Data fetches removed because Hero and EditorialFlow are static/client components
+  // that do not require server-fetched collections or products at this layer.
 
   return (
     <>

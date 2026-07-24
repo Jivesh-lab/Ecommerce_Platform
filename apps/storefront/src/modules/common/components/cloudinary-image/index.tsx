@@ -88,7 +88,13 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
 
   // Default image src (e.g. for fallback or standard browsers)
   // Let's use 1024px as a safe default src size
-  const defaultSrc = isCloudinary ? buildCloudinaryUrl(imageUrl, 1024, desktopAr) : imageUrl
+  let defaultSrc = imageUrl
+  if (isCloudinary) {
+    defaultSrc = buildCloudinaryUrl(imageUrl, 1024, desktopAr)
+  } else if (imageUrl.includes("images.unsplash.com")) {
+    const hasParams = imageUrl.includes("?")
+    defaultSrc = `${imageUrl}${hasParams ? "&" : "?"}w=1080&q=75&auto=format`
+  }
 
   // Detect if the media is a video
   const isVideo = imageUrl.match(/\.(mp4|webm|mov|ogg)$/i) || imageUrl.includes("/video/upload/")
