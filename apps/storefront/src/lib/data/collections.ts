@@ -17,7 +17,7 @@ export const retrieveCollection = async (id: string) => {
         cache: "force-cache",
       }
     )
-    .then(({ collection }) => collection)
+    .then(({ collection }: { collection: HttpTypes.StoreCollection }) => collection)
 }
 
 export const listCollections = async (
@@ -39,7 +39,7 @@ export const listCollections = async (
         cache: "force-cache",
       }
     )
-    .then(({ collections }) => ({ collections, count: collections.length }))
+    .then(({ collections }: { collections: HttpTypes.StoreCollection[] }) => ({ collections, count: collections.length }))
 }
 
 export const getCollectionByHandle = async (
@@ -55,5 +55,5 @@ export const getCollectionByHandle = async (
       next,
       cache: "force-cache",
     })
-    .then(({ collections }) => collections[0] || null)
+    .then(({ collections }: { collections: HttpTypes.StoreCollection[] }) => collections[0] || null)
 }

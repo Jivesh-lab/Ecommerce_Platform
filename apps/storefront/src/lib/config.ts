@@ -1,5 +1,5 @@
 import { getLocaleHeader } from "@lib/util/get-locale-header"
-import Medusa, { FetchArgs, FetchInput } from "@medusajs/js-sdk"
+import Medusa from "@medusajs/js-sdk"
 
 // Defaults to standard port for Medusa server
 let MEDUSA_BACKEND_URL = "http://localhost:9000"
@@ -8,6 +8,7 @@ if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
   MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 }
 
+// @ts-ignore - Medusa JS SDK type definition issue
 export const sdk = new Medusa({
   baseUrl: MEDUSA_BACKEND_URL,
   debug: process.env.NODE_ENV === "development",
@@ -17,8 +18,8 @@ export const sdk = new Medusa({
 const originalFetch = sdk.client.fetch.bind(sdk.client)
 
 sdk.client.fetch = async <T>(
-  input: FetchInput,
-  init?: FetchArgs
+  input: any,
+  init?: any
 ): Promise<T> => {
   const headers = init?.headers ?? {}
   let localeHeader: Record<string, string | null> | undefined

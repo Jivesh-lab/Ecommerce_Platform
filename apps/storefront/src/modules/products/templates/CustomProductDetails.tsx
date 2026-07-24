@@ -9,6 +9,7 @@ import { isEqual } from "lodash"
 import ProductPrice from "../components/product-price"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import WishlistButton from "@modules/common/components/wishlist-button"
+import { useCartUIStore } from "@lib/store/useCartUIStore"
 
 interface CustomProductDetailsProps {
   product: HttpTypes.StoreProduct
@@ -154,6 +155,7 @@ export default function CustomProductDetails({
     return false
   }, [selectedVariant])
 
+  const { incrementOptimisticCount, setOptimisticItemsCount, openAddedModal } = useCartUIStore()
   const [isAddedSuccess, setIsAddedSuccess] = useState(false)
 
   // Handle Add to Bag action with optimistic instant response (Amazon/Flipkart speed)
@@ -161,28 +163,46 @@ export default function CustomProductDetails({
     if (!selectedVariant?.id) return
 
     setIsAdding(true)
-    setIsAddedSuccess(true)
+    incrementOptimisticCount(1) // Optimistic increment
 
-    // Fire instant update event to header bag counter
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("cart-updated"))
+    // Prepare optimistic item for the modal
+    const optimisticItem = {
+      variant_id: selectedVariant.id,
+      product_title: product.title,
+      title: selectedVariant.title,
+      thumbnail: product.thumbnail,
+      unit_price: (selectedVariant as any).calculated_price?.calculated_amount || 0,
+      variant: selectedVariant,
     }
 
-    // Reset button success indicator after 1.5s
+    // Smooth delay before opening modal and restoring button state
     setTimeout(() => {
-      setIsAddedSuccess(false)
-    }, 1500)
+      openAddedModal(optimisticItem)
+      setIsAdding(false)
+      setIsAddedSuccess(true)
+      setTimeout(() => {
+        setIsAddedSuccess(false)
+      }, 1500)
+    }, 800)
 
     try {
-      await addToCart({
+      const updatedCart = await addToCart({
         variantId: selectedVariant.id,
         quantity: 1,
         countryCode,
       })
+
+      if (updatedCart && updatedCart.items) {
+        const totalItems = updatedCart.items.reduce((acc: number, item: any) => acc + item.quantity, 0)
+        setOptimisticItemsCount(totalItems)
+      }
+
+      // Refresh Next.js server components silently
+      router.refresh()
     } catch (error) {
+      incrementOptimisticCount(-1) // Revert on failure
       console.error("Error adding to cart:", error)
-    } finally {
-      setIsAdding(false)
+      setIsAdding(false) // Fallback to restore state
     }
   }
 

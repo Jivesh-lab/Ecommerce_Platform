@@ -2,6 +2,7 @@ import { deleteLineItem } from "@lib/data/cart"
 import { Spinner, Trash } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"
 import { useState } from "react"
+import { useCartUIStore } from "@lib/store/useCartUIStore"
 
 const DeleteButton = ({
   id,
@@ -13,16 +14,18 @@ const DeleteButton = ({
   className?: string
 }) => {
   const [isDeleting, setIsDeleting] = useState(false)
+  const { addOptimisticDeletedItem, removeOptimisticDeletedItem } = useCartUIStore()
 
   const handleDelete = async (id: string) => {
     setIsDeleting(true)
+    addOptimisticDeletedItem(id)
     try {
       await deleteLineItem(id)
       if (typeof window !== "undefined") {
         window.dispatchEvent(new CustomEvent("cart-updated"))
       }
     } catch (_err) {
-      // error handled
+      removeOptimisticDeletedItem(id)
     } finally {
       setIsDeleting(false)
     }

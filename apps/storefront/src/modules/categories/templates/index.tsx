@@ -85,7 +85,7 @@ export default async function CategoryTemplate({
 
   // Render unified Product Listing Page (Page 2 Layout) for all category pages
   return (
-    <CategoryProductListing category={category} parents={parents}>
+    <CategoryProductListing category={category} parents={parents} allCategories={allCategories}>
       {productGrid}
     </CategoryProductListing>
   )

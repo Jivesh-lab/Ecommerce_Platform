@@ -142,7 +142,7 @@ export async function addToCart({
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
+  return await sdk.store.cart
     .createLineItem(
       cart.id,
       {
@@ -152,13 +152,14 @@ export async function addToCart({
       {},
       headers
     )
-    .then(async () => {
+    .then(async ({ cart: updatedCart }: { cart: HttpTypes.StoreCart }) => {
       const [cartCacheTag, fulfillmentCacheTag] = await Promise.all([
         getCacheTag("carts"),
         getCacheTag("fulfillment"),
       ])
       revalidateTag(cartCacheTag)
       revalidateTag(fulfillmentCacheTag)
+      return updatedCart
     })
     .catch(medusaError)
 }
@@ -184,14 +185,15 @@ export async function updateLineItem({
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
+  return await sdk.store.cart
     .updateLineItem(cartId, lineId, { quantity }, {}, headers)
-    .then(async () => {
+    .then(async ({ cart: updatedCart }: { cart: HttpTypes.StoreCart }) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
       const fulfillmentCacheTag = await getCacheTag("fulfillment")
       revalidateTag(fulfillmentCacheTag)
+      return updatedCart
     })
     .catch(medusaError)
 }
@@ -211,14 +213,15 @@ export async function deleteLineItem(lineId: string) {
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
+  return await sdk.store.cart
     .deleteLineItem(cartId, lineId, {}, headers)
-    .then(async () => {
+    .then(async ({ parent: updatedCart }: { parent: HttpTypes.StoreCart }) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
       const fulfillmentCacheTag = await getCacheTag("fulfillment")
       revalidateTag(fulfillmentCacheTag)
+      return updatedCart
     })
     .catch(medusaError)
 }
@@ -253,7 +256,7 @@ export async function initiatePaymentSession(
 
   return sdk.store.payment
     .initiatePaymentSession(cart, data, {}, headers)
-    .then(async (resp) => {
+    .then(async (resp: any) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
       return resp
@@ -369,7 +372,7 @@ export async function placeOrder(cartId?: string) {
 
   const cartRes = await sdk.store.cart
     .complete(id, {}, headers)
-    .then(async (cartRes) => {
+    .then(async (cartRes: any) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
       return cartRes

@@ -80,19 +80,20 @@ export default function CategorySubmenuBar({
     tabs = [
       { name: "ALL", handle: "women-sale-40-v2" },
       { name: "SEE ALL", handle: "women-sale-40-v2" },
-      { name: "DRESSES AND JUMPSUITS", handle: "ws-v2-dresses" },
+      { name: "DRESSES AND JUMPSUITS", handle: "ws-v2-dresses-and-jumpsuits" },
       { name: "TROUSERS", handle: "ws-v2-trousers" },
       { name: "JEANS", handle: "ws-v2-jeans" },
       { name: "TOPS", handle: "ws-v2-tops" },
-      { name: "SHIRTS & BLOUSES", handle: "ws-v2-shirts" },
+      { name: "SHIRTS & BLOUSES", handle: "ws-v2-shirts-blouses" },
       { name: "BAGS", handle: "ws-v2-bags" },
       { name: "SKIRTS", handle: "ws-v2-skirts" },
-      { name: "SHORTS AND BERMUDA SHORTS", handle: "ws-v2-shorts" },
+      { name: "SHORTS AND BERMUDA SHORTS", handle: "ws-v2-shorts-and-bermuda-shorts" },
       { name: "LINEN", handle: "ws-v2-linen" },
-      { name: "TOTAL LOOK", handle: "ws-v2-totallook" },
+      { name: "TOTAL LOOK", handle: "ws-v2-total-look" },
     ]
   } else {
-    tabs = DEFAULT_MEN_TABS
+    const fallbackHandle = parentHandle || (category ? category.handle : "")
+    tabs = fallbackHandle ? [{ name: "ALL", handle: fallbackHandle }] : []
   }
 
   return (

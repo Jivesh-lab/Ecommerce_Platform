@@ -20,9 +20,16 @@ type ItemProps = {
   currencyCode: string
 }
 
+import { useCartUIStore } from "@lib/store/useCartUIStore"
+
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { optimisticDeletedItemIds } = useCartUIStore()
+
+  if (optimisticDeletedItemIds.includes(item.id)) {
+    return null
+  }
 
   const changeQuantity = async (quantity: number) => {
     setError(null)

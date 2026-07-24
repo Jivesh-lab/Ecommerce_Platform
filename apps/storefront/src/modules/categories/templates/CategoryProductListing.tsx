@@ -10,22 +10,32 @@ import CategorySubmenuBar from "../components/category-submenu-bar"
 interface CategoryProductListingProps {
   category: HttpTypes.StoreProductCategory
   parents: HttpTypes.StoreProductCategory[]
+  allCategories?: HttpTypes.StoreProductCategory[]
   children: React.ReactNode
 }
 
 export default function CategoryProductListing({
   category,
   parents,
+  allCategories = [],
   children,
 }: CategoryProductListingProps) {
   const [cols, setCols] = useState<1 | 2 | 4>(4)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
+  // Bypass stale cache by finding the category inside allCategories to get reliable parent_category_id
+  const categoryInAll = allCategories.find((c: any) => c.id === category.id)
+  const parentId = categoryInAll?.parent_category_id || category?.parent_category?.id || parents?.[0]?.id
+  const exactSiblings = parentId ? allCategories.filter((c: any) => c.parent_category_id === parentId) : []
+  const subcategoriesToPass = category.category_children?.length ? category.category_children : exactSiblings
+
+  console.log("DEBUG: parentId", parentId, "allCategories length", allCategories.length, "exactSiblings length", exactSiblings.length)
+
   return (
     <div className="relative w-full min-h-screen bg-white text-black font-sans pb-16">
       
       {/* Category Submenu Bar */}
-      <CategorySubmenuBar category={category} subcategories={category.category_children} parentHandle={parents?.[0]?.handle} />
+      <CategorySubmenuBar category={category} subcategories={subcategoriesToPass} parentHandle={parents?.[0]?.handle || category?.parent_category?.handle} />
 
       {/* Top Header / Control Bar */}
       <div className="w-full border-b border-neutral-100 py-6 px-8 sm:px-12 flex justify-between items-center select-none bg-white">

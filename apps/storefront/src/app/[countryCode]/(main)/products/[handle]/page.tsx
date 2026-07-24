@@ -17,14 +17,14 @@ export async function generateStaticParams() {
 
   try {
     const countryCodes = await listRegions().then((regions) =>
-      regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
+      regions?.map((r: any) => r.countries?.map((c: any) => c.iso_2)).flat()
     )
 
     if (!countryCodes) {
       return []
     }
 
-    const promises = countryCodes.map(async (country) => {
+    const promises = countryCodes.map(async (country: any) => {
       const { response } = await listProducts({
         countryCode: country,
         queryParams: { limit: 100, fields: "handle" },
@@ -39,13 +39,13 @@ export async function generateStaticParams() {
     const countryProducts = await Promise.all(promises)
 
     return countryProducts
-      .flatMap((countryData) =>
-        countryData.products.map((product) => ({
+      .flatMap((countryData: any) =>
+        countryData.products.map((product: any) => ({
           countryCode: countryData.country,
           handle: product.handle,
         }))
       )
-      .filter((param) => param.handle)
+      .filter((param: any) => param.handle)
   } catch (error) {
     console.error(
       `Failed to generate static paths for product pages: ${

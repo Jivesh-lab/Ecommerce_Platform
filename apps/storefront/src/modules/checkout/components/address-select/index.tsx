@@ -39,7 +39,7 @@ const AddressSelect = ({
           className="relative w-full flex justify-between items-center px-4 py-[10px] text-left bg-white cursor-default focus:outline-none border rounded-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
           data-testid="shipping-address-select"
         >
-          {({ open }) => (
+          {({ open }: { open: boolean }) => (
             <>
               <span className="block truncate text-xs uppercase tracking-widest font-bold text-gray-900">
                 {selectedAddress

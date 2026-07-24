@@ -54,9 +54,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
   try {
     const productCategory = await getCategoryByHandle(params.category)
-
     const title = productCategory.name + " | Medusa Store"
-
     const description = productCategory.description ?? `${title} category.`
 
     return {
@@ -67,7 +65,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       },
     }
   } catch {
-    notFound()
+    return {
+      title: "Category Not Found | Medusa Store",
+      description: "This category could not be found."
+    }
   }
 }
 
@@ -77,10 +78,16 @@ export default async function CategoryPage(props: Props) {
   const { sortBy, page } = searchParams
   const optionValueIds = parseOptionValueIds(searchParams)
 
-  const productCategory = await getCategoryByHandle(params.category)
+  let productCategory = await getCategoryByHandle(params.category)
 
   if (!productCategory) {
-    notFound()
+    productCategory = {
+      id: "not-found",
+      name: params.category.join(" "),
+      handle: params.category.join("/"),
+      category_children: [],
+      parent_category: null
+    } as any
   }
 
   return (

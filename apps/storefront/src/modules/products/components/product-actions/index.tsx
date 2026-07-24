@@ -7,11 +7,11 @@ import { Button } from "@modules/common/components/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams, useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useCartUIStore } from "@lib/store/useCartUIStore"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
-import { useRouter } from "next/navigation"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -137,33 +137,54 @@ export default function ProductActions({
 
   const [isAddedSuccess, setIsAddedSuccess] = useState(false)
 
-  // add the selected variant to the cart with instant feedback
+  const { incrementOptimisticCount, setOptimisticItemsCount, openAddedModal } = useCartUIStore()
+
+  // Handle Add to Bag action with optimistic instant response
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
-    setIsAddedSuccess(true)
-    setAddError(null)
+    incrementOptimisticCount(1) // Optimistic increment
 
-    // Fire instant update event to header bag counter
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("cart-updated"))
+    // Prepare optimistic item for the modal
+    const optimisticItem = {
+      variant_id: selectedVariant.id,
+      product_title: product.title,
+      title: selectedVariant.title,
+      thumbnail: product.thumbnail,
+      unit_price: (selectedVariant as any).calculated_price?.calculated_amount || 0,
+      variant: selectedVariant,
     }
 
+    // Smooth delay before opening modal and restoring button state
     setTimeout(() => {
-      setIsAddedSuccess(false)
-    }, 1500)
+      openAddedModal(optimisticItem)
+      setIsAdding(false)
+      setIsAddedSuccess(true)
+      setTimeout(() => {
+        setIsAddedSuccess(false)
+      }, 1500)
+    }, 800)
 
     try {
-      await addToCart({
+      const updatedCart = await addToCart({
         variantId: selectedVariant.id,
         quantity: 1,
         countryCode,
       })
+      
+      // Sync the exact count from the server response
+      if (updatedCart && updatedCart.items) {
+        const totalItems = updatedCart.items.reduce((acc: number, item: any) => acc + item.quantity, 0)
+        setOptimisticItemsCount(totalItems)
+      }
+
+      // Refresh Next.js server components silently
+      router.refresh()
     } catch (error: any) {
+      incrementOptimisticCount(-1) // Revert optimistic count
       setAddError(error?.message ?? "Could not add to bag. Please try again.")
-    } finally {
-      setIsAdding(false)
+      setIsAdding(false) // Fallback to restore state
     }
   }
 
@@ -234,6 +255,8 @@ export default function ProductActions({
                   ? "Select options"
                   : !inStock || !isValidVariant
                   ? "Out of stock"
+                  : isAdding
+                  ? "Adding..."
                   : "Add"}
              </Button>
              <button className="w-12 h-full flex items-center justify-center border border-black bg-white hover:bg-gray-50 transition-colors shrink-0">

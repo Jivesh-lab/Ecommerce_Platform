@@ -14,6 +14,7 @@ import PromoBanner from "@modules/layout/components/promo-banner"
 import { retrieveCustomer } from "@lib/data/customer"
 
 import WishlistNavButton from "@modules/layout/components/wishlist-nav-button"
+import AddedToBagModal from "@modules/layout/components/added-to-bag-modal"
 
 export default async function Nav() {
   const [regions, locales, currentLocale, categories, customer] = await Promise.all([
@@ -137,6 +138,9 @@ export default async function Nav() {
 
       {/* Promotional Red Banner - dynamically shows sale % based on current category */}
       <PromoBanner categories={categories} />
+
+      {/* Added to Bag Modal (Client Component) */}
+      <AddedToBagModal />
     </div>
   )
 }
